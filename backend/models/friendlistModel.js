@@ -1,0 +1,3 @@
+const FriendList = new Schema({
+  
+})
