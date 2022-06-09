@@ -1,10 +1,12 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import LoginButton from './components/login-button';
 
 function App() {
   return (
-    <div>
-      <h1>My App</h1>
-    </div>
+    <>
+      <h1>test</h1>
+    </>
   );
 }
 
