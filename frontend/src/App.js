@@ -1,11 +1,21 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import LoginButton from './components/login-button';
+import './App.css';
+import { Route, Switch } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+
+import NavBar from './components/nav-bar';
+import UserDisplay from './components/user-button';
+//import { Home, Profile, ExternalApi } from './views';
+
+
 
 function App() {
+  const { isLoading } = useAuth0();
+
   return (
     <>
-      <h1>test</h1>
+      <NavBar />
+      <UserDisplay />
+      <p>test</p>
     </>
   );
 }
