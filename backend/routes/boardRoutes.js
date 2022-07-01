@@ -6,26 +6,26 @@ const { getBoards, createBoard, updateBoard, deleteBoard, getTasks, createTask, 
 
 
 
-//Get all boards
-router.get('/', requiresAuth(), getBoards);
+//Get all boards // Should be updated to only get the currently logged in user's boards
+router.get('/', getBoards);
 
 //Create a new board
-router.post('/', requiresAuth(), createBoard);
+router.post('/', createBoard);
 
-//Update Boards
-router.put('/:id', requiresAuth(), updateBoard);
+//Update Board by ID
+router.put('/:id', updateBoard);
 
 //delete board by ID
-router.delete('/:id', requiresAuth(), deleteBoard);
+router.delete('/:id', deleteBoard);
 
 //Routes to the tasks themselves for a given board
-router.get('/:id', requiresAuth(), getTasks) //getTasks// is this effectively just getting a board? The tasks should all be inside the board itself
+router.get('/:id', getTasks) //getTasks// is this effectively just getting a board? The tasks should all be inside the board itself
 
-router.post("/:id", requiresAuth(), createTask) //create a new task
+router.post("/:id", createTask) //create a new task
 
-router.put("/:id/:id2", requiresAuth(), updateTask) //update task
+router.put("/:id/:id2", updateTask) //update task //#does this even do anything?
 
-router.delete('/:id/:id2', requiresAuth(), deleteTask) //delete Task
+router.delete('/:id/:id2', deleteTask) //delete Task
 
 //Test Routes for sharedList addition and removal
 router.get('/:boardId/sharedList', getBoardShared); // Get the shared list for a given board (Board id is :id)

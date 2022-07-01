@@ -1,10 +1,10 @@
-PUT http://localhost:5000/api/boards/628c1a9c873c91a9879854d1 HTTP/1.1
+PUT http://localhost:5000/api/boards/628c1a9c873c91a9879854d1/628c4f95fd5e4936351a1046 HTTP/1.1
 Content-Type: application/json
 
 {
-  "title":"First Task Updated",
+  "title":"Test Update Task Updated",
   "documentation":"Test Documentation Updated",
-  "status":"Incomplete",
+  "status":"Complete",
   "deadline":"2021-05-05"
 }
 
@@ -13,7 +13,9 @@ POST http://localhost:5000/api/boards HTTP/1.1
 Content-Type: application/json
 
 {
-  "name":"Board Test"
+  "name":"Board Test",
+  "description":"test board"
+
 }
 ###
 

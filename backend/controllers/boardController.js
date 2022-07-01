@@ -8,7 +8,7 @@ const {User} = require('../models/userModel');
 // @route GET /api/boards
 // @access Private
 const getBoards = asyncHandler(async (req, res) => {
-  const boards = await Board.find({});
+;  const boards = await Board.find({});
   
   //const boards = await Board.find({})
   res.status(200).json({boards})
@@ -22,11 +22,12 @@ const createBoard = asyncHandler(async (req, res) => {
 
   const board = await Board.create({
     name: req.body.name,
-    owner: req.user.id,
-    sharedList: [req.user.id]
+    description: req.body.description//,
+    //owner: req.user.id,
+    //sharedList: [req.user.id]
   })
 
-  board.sharedList.push(req.user.id)
+  //board.sharedList.push(req.user.id)
 
   res.status(200).json({board});
 })
@@ -63,7 +64,7 @@ const deleteBoard = asyncHandler(async (req, res) => {
 })
 
 
-// GET board
+// GET board #name should be updated, as it is getboard not gettasks
 const getTasks = asyncHandler(async (req, res) => {
   const board = await Board.findById(req.params.id);
 

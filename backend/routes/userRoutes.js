@@ -19,7 +19,7 @@ router.put('/:id', requiresAuth(), updateUser);
 router.delete('/:id', requiresAuth(), deleteUser);
 
 //CONTACT ROUTING 
-//Get all contacts// should probably be rerouted through an /contact/ instead.
+//Get all contacts// should probably be rerouted through a /contact/ instead.
 router.get('/:id', requiresAuth(), getContacts);
 
 //Create a new Contact

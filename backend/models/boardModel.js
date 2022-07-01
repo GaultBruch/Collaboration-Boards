@@ -20,9 +20,10 @@ const boardSchema = new Schema({
     type: String,
     required: [true, 'Please add a board name']
   },
+  description: {type: String},
   owner: {
     type: mongoose.Schema.Types.ObjectId, //userSchema,
-    required: [true,,"this board doesn't have a user! Please add one"], //Needs to be true when users are set 
+    required: [false,"this board doesn't have a user! Please add one"], //Needs to be true when users are set 
     ref: 'User'
   },
   sharedList: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}], //userSchema

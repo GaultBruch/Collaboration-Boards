@@ -8,32 +8,69 @@ const port = process.env.PORT || 5000;
 // auth0 middleware
 
 connectDB();
-
-
+const cors = require('cors');
+const { expressjwt: jwt} = require('express-jwt');
+const jwks = require('jwks-rsa');
+const axios = require('axios');
 const app = express();
-
+//const { auth } = require('express-openid-connect');
 // Authentication Code
+/*
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+}); */
 
-const { auth } = require('express-openid-connect')
-
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.SEC,
-  baseURL: process.env.BASEURL,
-  clientID: process.env.CLIENTID,
-  issuerBaseURL: process.env.ISSUER
-}; 
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(auth(config));
+
+//TestAuth from Quickstart API
+
+const jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: 'https://dev-9nfdi31c.us.auth0.com/.well-known/jwks.json'
+}),
+audience: 'https://board_test/api/v2',
+algorithms: ['RS256']
+});
 
 
-//Check how jwt deals with a basic login page, or if I can route this differently.
-//app.get('/', (req, res) => {
-//  res.send(req.oidc.isAuthenticated() ? 'logged in' : 'logged out')
-//})
+
+/*app.use(auth(config)); */
+
+/*Check JWT from backend nodejs quickstart at auth */
+/*
+const {auth} = require('express-oauth2-jwt-bearer');
+
+const checkJwt = auth({
+  audience: process.env.AUDIENCE,
+  issuerBaseURL: process.env.ISSUER
+}); */
+
+app.get('/echo', function(req, res) {
+  res.json({
+    message: JSON.stringify(req.get("Authorization"))
+  });
+})
+
+app.get('/api/public', function(req, res) {
+  res.json({
+    message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
+  });
+}); 
+
+// This route needs authentication
+app.get('/api/private', jwtCheck, function(req, res) {
+  console.log('Got in');
+  res.json({
+    message: 'Hello from a private endpoint! You need to be authenticated to see this.'
+  });
+}); 
 
 app.use('/api/users', require('./routes/userRoutes')); //protected
 app.use('/api/boards', require('./routes/boardRoutes')); //unprotected
