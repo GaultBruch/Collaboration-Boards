@@ -7,8 +7,12 @@ import BoardNav from './pages/BoardNav'
 import UserDisplay from './components/user-button';
 import Board from './pages/BoardPage';
 import NavBar from './components/nav-bar';
+import Profile from './pages/Profile';
+import Contacts from './pages/Contacts';
+import Notifications from './pages/Notifications';
 
 import axios from 'axios';
+
 //import { Home, Profile, ExternalApi } from './views';
 
 
@@ -30,8 +34,6 @@ function App() {
           'Authorization': `Bearer ${token}`
         },
       });
-      console.log(token);
-      console.log(response.data);
     } catch (error) {
       console.log('error in APP');
       console.log(error);
@@ -47,7 +49,7 @@ function App() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+    });
 
       console.log(token);
       console.log(response);
@@ -58,10 +60,14 @@ function App() {
 
   return (
     <>
+      <NavBar />
       <Routes>
          <Route path='/' element={<Dashboard />} />
          <Route path='/home' element={<Homepage />} />
+         <Route path='/profile' element={<Profile />} />
+         <Route path='/contacts' element={<Contacts />} />
          <Route path='/boardNav' element={<BoardNav />} />
+         <Route path='/notifications' element={<Notifications />} />
          <Route path={`/boardNav/:boardId`} element={<Board />} />
       </Routes>
       <h1>App buttons</h1>

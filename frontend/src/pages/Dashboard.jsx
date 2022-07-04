@@ -10,6 +10,11 @@ function Dashboard() {
   const { user } = useAuth0();
 
   useEffect(() => {
+    try {
+      
+    } catch (error) {
+      
+    }
     axios.get(`http://localhost:5000/api/boards`, {crossDomain: true})
       .then(res => {
         const boards = res.data;
@@ -20,7 +25,6 @@ function Dashboard() {
 
   return (
     <>
-      <NavBar />
       <p>Dashboard</p>
       {<p>Board Here {JSON.stringify( boardList.boards, null, "\t")}</p>}
     </>

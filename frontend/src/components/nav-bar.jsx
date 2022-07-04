@@ -1,15 +1,17 @@
 import AuthNav from './auth-nav';
+import { Link } from 'react-router-dom';
+
 
 const NavBar = () => {
   return (
-    <div className="nav-container mb-3">
-      <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <div className="container">
-          <div className="navbar-brand logo" />
-          <AuthNav />
-        </div>
-      </nav>
-    </div>
+    <>
+      <Link to={"/"}>Dashboard</Link>
+      <Link to={"/profile"}>Profile</Link>
+      <Link to={"/contacts"}>Contacts</Link>
+      <Link to={"/boardNav"}>BoardNav</Link>
+      <Link to="/notifications">Notifications</Link>
+      <AuthNav />
+    </>
   );
 };
 

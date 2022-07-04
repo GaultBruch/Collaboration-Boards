@@ -13,6 +13,8 @@ function BoardComponentBanner(props) {
   const [ boardName, setBoardName] = useState('');
   const [ boardDescription, setBoardDescription ] = useState('');
   const [rebuild, setRebuild] = useState(false);
+  const [ toggleName, setToggleName] = useState(true);
+  const [ toggleDescription, setToggleDescription] = useState(true);
   const [ deletePopup, setDeletePopup] = useState({
     show: false,
     id: null
@@ -34,6 +36,31 @@ function BoardComponentBanner(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rebuild]);
 
+  function toggleNameChange() {
+    setToggleName(false);
+  }
+
+  function toggleDescriptionChange() {
+    setToggleDescription(false);
+  }
+  
+  function handleTextChange(e) {
+    setBoardName(e.target.value);
+  }
+  
+  function  handleDescriptionChange(e) {
+    setBoardDescription(e.target.value);
+  }
+
+  function onEnterKey() {
+    axios.put(`http://localhost:5000/api/boards/${props.board._id}`, {
+    name: boardName,
+    description: boardDescription
+    })
+    if (toggleName === false) { setToggleName(true); };
+    if (toggleDescription === false) { setToggleDescription(true); };
+  }
+
   function trashBoard(boardId) {
     axios.delete(`http://localhost:5000/api/boards/${boardId}`).then(
       //remove board from frontend list
@@ -41,17 +68,26 @@ function BoardComponentBanner(props) {
     );
   }
 
-  //if (isVisible === false) {
-  //  return ;
-  //}
-
   return (
     <div className='board-banner'>
-      <h3>{boardName}</h3>
+      {toggleName ? (<h3 onDoubleClick={toggleNameChange}>{boardName}</h3>) : 
+      (<input type='text' value={boardName} onChange={handleTextChange} onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          onEnterKey();
+          e.preventDefault();
+        }
+      }}/> )}
       <button>Edit Board Name/Description</button>
       <p>BoardId {props.board._id}</p>
       <p>Owner *Not implemented</p>
-      <p>Description: {boardDescription}</p>
+      {toggleDescription ? (<p onDoubleClick={toggleDescriptionChange}>{boardDescription}</p>) : 
+      (<input type='text' value={boardDescription} onChange={handleDescriptionChange} onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          e.preventDefault();
+          e.stopPropagation();
+          onEnterKey();
+        }
+      }}/> )}
       <p>Icon/Widget *Not implemented</p>
       {//<button onClick={() => trashBoard(props.board._id)}>Trash Button</button>
       }

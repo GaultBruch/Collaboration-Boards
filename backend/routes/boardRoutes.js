@@ -1,19 +1,20 @@
 //Import relevant libaries
 const express = require('express');
 const {requiresAuth} = require('express-openid-connect');
+const { jwtCheck } = require('../middleware/checkJwtAuth');
 const router = express.Router();
 const { getBoards, createBoard, updateBoard, deleteBoard, getTasks, createTask, updateTask, deleteTask, getBoardShared, addBoardShared, updateBoardShared, deleteBoardShared } = require('../controllers/boardController')
 
 
 
 //Get all boards // Should be updated to only get the currently logged in user's boards
-router.get('/', getBoards);
+router.get('/', jwtCheck, getBoards);
 
 //Create a new board
-router.post('/', createBoard);
+router.post('/', jwtCheck, createBoard);
 
 //Update Board by ID
-router.put('/:id', updateBoard);
+router.put('/:id', jwtCheck, updateBoard);
 
 //delete board by ID
 router.delete('/:id', deleteBoard);

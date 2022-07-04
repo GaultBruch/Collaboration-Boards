@@ -40,7 +40,14 @@ const updateBoard = asyncHandler(async (req, res) => {
     throw new Error('Board with given ID does not exist');
   }
 
-  const updatedBoard = await Board.findByIdAndUpdate(req.params.id, req.body, {new: true,})
+  var modifications = {};
+
+  modifications.name = req.body.name ? req.body.name: undefined;
+  modifications.description = req.body.description ? req.body.description: undefined;
+  modifications.taskList = undefined;
+  modifications.sharedList = undefined;
+
+  const updatedBoard = await Board.findByIdAndUpdate(req.params.id, {$set: modifications}, {new: true,})
 
   res.status(200).json(updatedBoard);
 })
