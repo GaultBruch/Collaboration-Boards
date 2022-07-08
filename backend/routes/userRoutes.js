@@ -6,30 +6,31 @@ const { getUsers, createUser, updateUser, deleteUser, getContacts, createContact
 
 
 //GENERAL USER ROUTING
-//Get all users
-router.get('/', requiresAuth(), getUsers);
+//Get all users //Should be used instead to grab the currently logged in users user object.
+//Incoming data will be the email of the user.
+router.get('/:email', getUsers);
 
-//Create a new User
+//Create a new User // basically defunct, auth0 deals with this instead
 router.post('/', createUser);
 
 //Update users
-router.put('/:id', requiresAuth(), updateUser);
+router.put('/:id', updateUser);
 
 //Delete user
-router.delete('/:id', requiresAuth(), deleteUser);
+router.delete('/:id', deleteUser);
 
 //CONTACT ROUTING 
 //Get all contacts// should probably be rerouted through a /contact/ instead.
-router.get('/:id', requiresAuth(), getContacts);
+router.get('/contacts/:id', getContacts);
 
 //Create a new Contact
-router.post('/:id', requiresAuth(), createContact);
+router.post('/contacts/:id', createContact);
 
 //Update Contacts
-router.put('/:id/:id2', requiresAuth(), updateContact);
+router.put('/contacts/:id/:id2', updateContact);
 
 //Delete Contact
-router.delete('/:id/:id2', deleteContact);
+router.delete('/contacts/:id/:id2', deleteContact);
 
 //ALLOWED BOARDS ROUTING
 

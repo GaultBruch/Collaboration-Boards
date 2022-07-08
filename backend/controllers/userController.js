@@ -4,15 +4,16 @@ const { Board } = require('../models/boardModel');
 
 
 
-// @desc Get Users
+// @desc Get User from email parameter
 // @route GET /api/users
 // @access Private
 const getUsers = asyncHandler(async (req, res) => {
-  const authCheck = req.oidc.isAuthenticated(); //Not sure how I need to use this
-  const users = await User.find({}); 
+  //const authCheck = req.oidc.isAuthenticated(); //Not sure how I need to use this //Currently getusers has no protection against a 
+  //random person creating an account and pushing in a different email than the one they are logged in with.
+  const specificUser = await User.find({email: req.params.email}); 
   
   //const users = await User.find({})// change to users if necessary code
-  res.status(200).json({users})
+  res.status(200).json(specificUser)
 })
 
 const createUser = asyncHandler(async (req, res) => {

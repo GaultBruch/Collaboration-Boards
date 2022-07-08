@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import {useAuth0} from '@auth0/auth0-react';
 import axios from 'axios';
 
 
 
 function TaskForm(props) {
+
+  const {user , getAccessTokenSilently} = useAuth0();
 
   const [textVal, setTextVal] = useState('');
   const [nameVal, setNameVal] = useState('');
@@ -25,29 +28,32 @@ function TaskForm(props) {
     alert('A new task has been submitted');
     e.preventDefault();
     console.log(props.id);
-    let message = {
-      title: nameVal,
-      documentation: textVal,
-      status: 'Incomplete',
-      deadline: dueDate
-    };
-    try {
-      axios.post(`http://localhost:5000/api/boards/${props.id}`, {
-        title: nameVal,
-        documentation: textVal,
-        status: 'Incomplete',
-        deadline: dueDate
 
-      }, {crossDomain: true})
-    .then(res => {
-      setTextVal('');
-      setNameVal('');
-      setDueDate();
-      props.rebuild(true);
-    });
-    } catch (error) {
-      console.log(error);
-    }
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        axios.post(`http://localhost:5000/api/boards/${props.id}`, {
+          
+          title: nameVal,
+          documentation: textVal,
+          status: 'Incomplete',
+          deadline: dueDate, 
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(res => {
+          console.log(res);
+          setTextVal('');
+          setNameVal('');
+          setDueDate();
+          props.rebuild(true);
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   };
 
   return (

@@ -7,11 +7,13 @@ const {User} = require('../models/userModel');
 // @desc Get Boards
 // @route GET /api/boards
 // @access Private
+
+//Grabs a single board based on the req.body.boardId passed in, and returns the board
 const getBoards = asyncHandler(async (req, res) => {
-;  const boards = await Board.find({});
+  const board = await Board.findbyId(req.params.boardId);
   
   //const boards = await Board.find({})
-  res.status(200).json({boards})
+  res.status(200).json({board})
 })
 
 const createBoard = asyncHandler(async (req, res) => {
@@ -22,14 +24,14 @@ const createBoard = asyncHandler(async (req, res) => {
 
   const board = await Board.create({
     name: req.body.name,
-    description: req.body.description//,
-    //owner: req.user.id,
+    description: req.body.description,
+    owner: req.body.owner
     //sharedList: [req.user.id]
   })
 
-  //board.sharedList.push(req.user.id)
+  board.sharedList.push(req.body.owner)
 
-  res.status(200).json({board});
+  res.status(200).json(board);
 })
 
 const updateBoard = asyncHandler(async (req, res) => {

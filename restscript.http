@@ -12,11 +12,6 @@ Content-Type: application/json
 POST http://localhost:5000/api/boards HTTP/1.1
 Content-Type: application/json
 
-{
-  "name":"Board Test",
-  "description":"test board"
-
-}
 ###
 
 GET http://localhost:5000/api/boards HTTP/1.1
@@ -43,18 +38,15 @@ DELETE http://localhost:5000/api/boards/628c1a9c873c91a9879854d1/62904822026ba60
 
 
 //GET ALL USERS
-GET http://localhost:5000/api/users HTTP/1.1
+GET http://localhost:5000/api/users/authtest@sub.com HTTP/1.1
 
 ###
-//NEW USER
-POST http://localhost:5000/api/users HTTP/1.1
+//Add to user board list
+POST http://localhost:5000/api/users/62c63b297d65f10011e0cf41/boardList HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "TestName",
-  "password": "test",
-  "email": "test@gmail.com",
-  "contactID": "test 1234"
+  "boardId": "62bcb1a522141920cd957e5e"
 }
 
 ###

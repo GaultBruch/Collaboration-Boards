@@ -3,11 +3,13 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskForm from '../components/taskForm';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function BoardPage() {
 
   let {boardId} = useParams();
 
+  const {user , getAccessTokenSilently} = useAuth0();
   const [board, setBoard] = useState('');
   const [incomplete, setIncomplete] = useState([]);
   const [inProgress, setInProgress] = useState([]);
@@ -16,11 +18,22 @@ function BoardPage() {
 
   useEffect(() => {
     if (rebuild === true) {
-      axios.get(`http://localhost:5000/api/boards/${boardId}`, {crossDomain: true})
-      .then(res => {
-        setBoard(res.data);
-        setRebuild(false);
-    });
+      (async () => {
+        try {
+          const token = await getAccessTokenSilently();
+          axios.get(`http://localhost:5000/api/boards/${boardId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+          }, {crossDomain: true})
+          .then(res => {
+            setBoard(res.data);
+            setRebuild(false);
+          })
+        } catch (error) {
+          console.log(error);
+        }
+      })();
   }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,22 +46,66 @@ function BoardPage() {
     board.taskList.forEach(element => {
       if (element._id === taskid) {
         if (element.status === 'Incomplete') {
-          axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {status:'InProgress'});
-          setInProgress([...inProgress, element]);
-          setIncomplete(incomplete.filter(element => element._id !== taskid));
-          element.status = 'InProgress';
-        } else if (element.status === 'InProgress') {
-          axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {status:'Complete'});
-          //remove from old array state, push to new array state
-          setComplete([...complete, element]);
-          setInProgress(inProgress.filter(element => element._id !== taskid));
-          element.status = 'Complete';
+          (async () => {
+            try {
+              const token = await getAccessTokenSilently();
+              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                status: 'InProgress'
+              }, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setInProgress([...inProgress, element]);
+                setIncomplete(incomplete.filter(element => element._id !== taskid));
+                element.status = 'InProgress';
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
 
+        } else if (element.status === 'InProgress') {
+          (async () => {
+            try {
+              const token = await getAccessTokenSilently();
+              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                status: 'Complete' 
+              }, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setComplete([...complete, element]);
+                setInProgress(inProgress.filter(element => element._id !== taskid));
+                element.status = 'Complete';
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
         } else if (element.status === 'Complete') {
-          axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {status:'Incomplete'})
-          setIncomplete([...incomplete, element]);
-          setComplete(complete.filter(element => element._id !== taskid));
-          element.status = 'Incomplete';
+          (async () => {
+            try {
+              const token = await getAccessTokenSilently();
+              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                status: 'Incomplete' 
+              }, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setIncomplete([...incomplete, element]);
+                setComplete(complete.filter(element => element._id !== taskid));
+                element.status = 'Incomplete';
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
         }
       }
     });
@@ -56,8 +113,6 @@ function BoardPage() {
   
   function buildBoard() {
     //This function takes in the tasklist from the boardState and organizes them into incomplete, in progress, complete
-    console.log('BuildBoard function Call');
-    console.log('Board State before Buildboard' + JSON.stringify(board));
 
     let incompleteTasks = [];
     let inProgressTasks = [];
@@ -90,15 +145,54 @@ function BoardPage() {
     board.taskList.forEach(element => {
       if (element._id === taskid) {
         if (element.status === 'Incomplete') {
-          axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`);
-          setIncomplete(incomplete.filter(element => element._id !== taskid));
+          (async () => {
+            try {
+              const token = await getAccessTokenSilently();
+              axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setIncomplete(incomplete.filter(element => element._id !== taskid));
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
         } else if (element.status === 'InProgress') {
-          axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`);
-          //remove from old array state
-          setInProgress(inProgress.filter(element => element._id !== taskid));
+
+          (async () => {
+            try {
+              const token = await getAccessTokenSilently();
+              axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setInProgress(inProgress.filter(element => element._id !== taskid));
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
         } else if (element.status === 'Complete') {
-          axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`)
-          setComplete(complete.filter(element => element._id !== taskid));
+
+          (async () => {
+            try {
+              const token = await getAccessTokenSilently();
+              axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setComplete(complete.filter(element => element._id !== taskid));              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
         }
       }
     })

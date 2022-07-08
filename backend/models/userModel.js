@@ -11,7 +11,7 @@ const contact = mongoose.Schema({
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please add a name']
+    required: [false, 'Please add a name']
   },
   email: {
     type: String,

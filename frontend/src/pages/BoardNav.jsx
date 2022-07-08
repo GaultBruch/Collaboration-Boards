@@ -11,9 +11,11 @@ import BoardForm from '../components/BoardForm';
 function BoardNav() {
 
   const [boardList, setBoardList] = useState('');
-  const { user } = useAuth0();
+  const [boardIds, setBoardIds] = useState([]);
+  const { user, getAccessTokenSilently } = useAuth0();
   const [rebuild, setRebuild] = useState(true);
   const [isVisible, setIsVisible] = useState([]);
+  const [userId, setUserId] = useState(undefined);
 
   //for board in boardlist add boardcomponent. Boardcomponent should do relevant api call on click and open to board
   //Grab boards //####Currently Grabs all boards, in the future this should instead grab from the users board list and render
@@ -21,35 +23,67 @@ function BoardNav() {
 
   //This way we can store the board ids locally, and then grab the larger bits of information when we actually need them.
   useEffect(() => {
-    if (rebuild === true) {
-    axios.get(`http://localhost:5000/api/boards`, {crossDomain: true})
-      .then(res => {
-        
-        const boards = res.data;
-        var newBoards = boards;
-        setBoardList(res.data);
-        let vis = [];
-        newBoards.boards.forEach(element => {
-          console.log(element)
-          vis.push(element._id)
-        });
-        setIsVisible(vis);
-        setRebuild(false);
-      });
+    if (userId === undefined) {
+      axios.get(`http://localhost:5000/api/users/${user.email}`).then(res => {
+      setUserId(res.data[0]._id)
+      console.log(res.data[0])
+      console.log(res.data[0]._id)}
+      )
+    }
+    console.log(userId);
+    if (rebuild === true && userId !== undefined) {
+
+      //Given userId, get the boards from the user with a user get command,
+      //then, for each of the boards ids grab the board from the backend and 
+      //send it to the frontend to be put into the boardList. From there they should
+      //work as the old boards did.
+      (async () => {
+        try {
+          const token = await getAccessTokenSilently();
+          axios.get(`http://localhost:5000/api/boards`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+          }).then(res => {
+            const boards = res.data;
+            var newBoards = boards;
+            setBoardList(res.data);
+            let vis = [];
+            newBoards.boards.forEach(element => {
+              console.log(element)
+              vis.push(element._id)
+            });
+            setIsVisible(vis);
+            setRebuild(false);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      })();
     }
   }, [rebuild]);
 
   function trashBoard(boardId) {
-    axios.delete(`http://localhost:5000/api/boards/${boardId}`);
-    console.log(isVisible)
-    setIsVisible(isVisible.filter(element => element !== boardId));
-    console.log(isVisible)
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        axios.delete(`http://localhost:5000/api/boards/${boardId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        }).then(() => {
+          setIsVisible(isVisible.filter(element => element !== boardId));
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }
 
-      //remove board from frontend list
-      //rebuild frontend page with list removed
-
-      //setRebuild(true);
-    
+  function getMe() {
+    axios.get(`http://localhost:5000/api/users/${user.email}`).then(res =>
+      console.log(res)
+    )
   }
 
 
@@ -64,8 +98,11 @@ function BoardNav() {
 
     return (
       <>
+      <p>UserEmail {user.email}</p>
+      <p>UserId {userId}</p>
       <p>{String(rebuild)}</p>
-      <BoardForm rebuild={setRebuild} />
+      <button onClick={() => {getMe()}}>GetmeFunc</button>
+      <BoardForm rebuild={setRebuild} userId={userId} />
       {renderedArray.map(board => (
         <>
           <BoardComponent key={board._id} board={board} rebuildState={rebuild}/>

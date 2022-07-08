@@ -1,12 +1,15 @@
 import React from 'react'
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 function BoardForm(props) {
     
   const [boardName, setBoardName] = useState('');
   const [boardDescription, setBoardDescription] = useState('');
+  const { getAccessTokenSilently } = useAuth0();
+
 
   function handleDescriptionChange(e) {
     setBoardDescription(e.target.value);
@@ -23,20 +26,46 @@ function BoardForm(props) {
       name: boardName,
       description: boardDescription,
     };
-    try {
-      axios.post(`http://localhost:5000/api/boards`, {
-        name: boardName,
-        description: boardDescription
-      }, {crossDomain: true})
-    .then(res => {
-      setBoardDescription("");
-      setBoardName("");
-      props.rebuild(true);
-    });
-    } catch (error) {
-      console.log(error);
-    }
+    (async () => {
+      //Write to the board itself with the owner, sharedList gets the owner pushed to it during post
+      try {
+        const token = await getAccessTokenSilently();
+        axios.post(`http://localhost:5000/api/boards`, {
+          name: boardName,
+          description: boardDescription,
+          owner: props.userId
+        }, { 
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }, {crossDomain: true})
+        .then(res => {
+          setBoardDescription("");
+          setBoardName("");
+          props.rebuild(true);
+          alert(JSON.stringify(res.data._id));
+          try {
+          axios.post(`http://localhost:5000/api/users/${props.userId}/boardList`, {
+            boardId: res.data._id
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }) }
+          catch (error) {
+            console.log(error);
+          }
+        });
+
+      } catch (error) {
+        console.log(error);
+      }
+      
+
+      
+    })();
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <label>

@@ -5,8 +5,11 @@ import Board from '../pages/BoardPage';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function BoardComponentBanner(props) {
+
+  const {user, getAccessTokenSilently} = useAuth0();
 
   console.log(props);
 
@@ -53,19 +56,26 @@ function BoardComponentBanner(props) {
   }
 
   function onEnterKey() {
-    axios.put(`http://localhost:5000/api/boards/${props.board._id}`, {
-    name: boardName,
-    description: boardDescription
-    })
-    if (toggleName === false) { setToggleName(true); };
-    if (toggleDescription === false) { setToggleDescription(true); };
-  }
 
-  function trashBoard(boardId) {
-    axios.delete(`http://localhost:5000/api/boards/${boardId}`).then(
-      //remove board from frontend list
-      //rebuild frontend page with list removed
-    );
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        axios.put(`http://localhost:5000/api/boards/${props.board._id}`, {
+          name: boardName,
+          description: boardDescription
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(res => {
+          if (toggleName === false) { setToggleName(true); };
+          if (toggleDescription === false) { setToggleDescription(true); };
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }
 
   return (
@@ -79,7 +89,8 @@ function BoardComponentBanner(props) {
       }}/> )}
       <button>Edit Board Name/Description</button>
       <p>BoardId {props.board._id}</p>
-      <p>Owner *Not implemented</p>
+      <p>{ JSON.stringify(user) }</p>
+      <p>Owner: *Not implemented { user.name }</p>
       {toggleDescription ? (<p onDoubleClick={toggleDescriptionChange}>{boardDescription}</p>) : 
       (<input type='text' value={boardDescription} onChange={handleDescriptionChange} onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === 'Escape') {
