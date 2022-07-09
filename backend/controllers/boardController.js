@@ -10,7 +10,7 @@ const {User} = require('../models/userModel');
 
 //Grabs a single board based on the req.body.boardId passed in, and returns the board
 const getBoards = asyncHandler(async (req, res) => {
-  const board = await Board.findbyId(req.params.boardId);
+  const board = await Board.findbyId(req.body.boardId);
   
   //const boards = await Board.find({})
   res.status(200).json({board})

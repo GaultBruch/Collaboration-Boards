@@ -1,5 +1,4 @@
 //Bring in requirements
-const {requiresAuth} = require('express-openid-connect');
 const express = require('express');
 const router = express.Router();
 const { getUsers, createUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList } = require('../controllers/userController')

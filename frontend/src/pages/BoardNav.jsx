@@ -10,7 +10,7 @@ import BoardForm from '../components/BoardForm';
 
 function BoardNav() {
 
-  const [boardList, setBoardList] = useState('');
+  const [boardList, setBoardList] = useState([]);
   const [boardIds, setBoardIds] = useState([]);
   const { user, getAccessTokenSilently } = useAuth0();
   const [rebuild, setRebuild] = useState(true);
@@ -26,20 +26,54 @@ function BoardNav() {
     if (userId === undefined) {
       axios.get(`http://localhost:5000/api/users/${user.email}`).then(res => {
       setUserId(res.data[0]._id)
+      setBoardIds(res.data[0].boardList);
+      console.log(res);
       console.log(res.data[0])
       console.log(res.data[0]._id)}
       )
     }
     console.log(userId);
+    console.log(rebuild);
     if (rebuild === true && userId !== undefined) {
+      console.log('rebuild true and userId found');
 
       //Given userId, get the boards from the user with a user get command,
       //then, for each of the boards ids grab the board from the backend and 
       //send it to the frontend to be put into the boardList. From there they should
       //work as the old boards did.
       (async () => {
+        let vis = [];
         try {
           const token = await getAccessTokenSilently();
+          boardIds.forEach(element => {
+            console.log(element)
+            try {
+              axios.get(`http://localhost:5000/api/boards`, 
+                { 
+                  boardId: element 
+                }, {
+                  headers: {
+                    'Authorization': `Bearer ${token}`
+                  },
+                }).then(res => {
+                  console.log(res)
+                  setBoardList(...boardList, res.data)
+                  vis.push(element.id)
+                }) 
+              
+            } catch (error) {
+              console.log(error)
+            }
+
+          
+                
+          });
+          setIsVisible(vis)
+          setRebuild(false)
+          
+
+
+/*
           axios.get(`http://localhost:5000/api/boards`, {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -55,13 +89,13 @@ function BoardNav() {
             });
             setIsVisible(vis);
             setRebuild(false);
-          });
+          }); */
         } catch (error) {
           console.log(error);
         }
       })();
     }
-  }, [rebuild]);
+  }, [rebuild, userId]);
 
   function trashBoard(boardId) {
     (async () => {
@@ -86,11 +120,11 @@ function BoardNav() {
     )
   }
 
-
-  if (boardList.boards) {
+  console.log(boardList)
+  if (userId !== undefined) {
     console.log(rebuild)
     let renderedArray = [];
-    boardList.boards.forEach(element => {
+    boardList.forEach(element => {
       if (isVisible.includes(element._id)) {
         renderedArray.push(element);
       }
@@ -101,6 +135,7 @@ function BoardNav() {
       <p>UserEmail {user.email}</p>
       <p>UserId {userId}</p>
       <p>{String(rebuild)}</p>
+      
       <button onClick={() => {getMe()}}>GetmeFunc</button>
       <BoardForm rebuild={setRebuild} userId={userId} />
       {renderedArray.map(board => (
