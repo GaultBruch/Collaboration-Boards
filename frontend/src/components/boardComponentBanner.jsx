@@ -3,29 +3,22 @@ import React from 'react'
 import { Route, Routes} from 'react-router-dom';
 import Board from '../pages/BoardPage';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
+import {MainContext} from '../contexts/MainContext';
 
 function BoardComponentBanner(props) {
 
-  const {user, getAccessTokenSilently} = useAuth0();
-
-  console.log(props);
 
   const [ boardName, setBoardName] = useState('');
   const [ boardDescription, setBoardDescription ] = useState('');
   const [rebuild, setRebuild] = useState(false);
   const [ toggleName, setToggleName] = useState(true);
   const [ toggleDescription, setToggleDescription] = useState(true);
-  const [ deletePopup, setDeletePopup] = useState({
-    show: false,
-    id: null
-  });
+  const {userData} = useContext(MainContext);
   //const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    console.log(props.rebuildState);
     if (props.rebuildState === true) {
       //setIsVisible(false);
     }
@@ -59,7 +52,7 @@ function BoardComponentBanner(props) {
 
     (async () => {
       try {
-        const token = await getAccessTokenSilently();
+        const token = userData.jwt;
         axios.put(`http://localhost:5000/api/boards/${props.board._id}`, {
           name: boardName,
           description: boardDescription
@@ -89,8 +82,7 @@ function BoardComponentBanner(props) {
       }}/> )}
       <button>Edit Board Name/Description</button>
       <p>BoardId {props.board._id}</p>
-      <p>{ JSON.stringify(user) }</p>
-      <p>Owner: *Not implemented { user.name }</p>
+      <p>Owner: Taken from props.board.owner { props.board.owner }</p>
       {toggleDescription ? (<p onDoubleClick={toggleDescriptionChange}>{boardDescription}</p>) : 
       (<input type='text' value={boardDescription} onChange={handleDescriptionChange} onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === 'Escape') {

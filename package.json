@@ -2,6 +2,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^1.10.1",
     "axios": "^0.27.2",
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -10,6 +11,7 @@
     "express-jwt": "^7.7.5",
     "express-oauth2-jwt-bearer": "^1.1.0",
     "express-openid-connect": "^2.7.2",
+    "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
     "minimist": "^1.2.6",
     "mongoose": "^6.3.4",

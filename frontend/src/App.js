@@ -10,6 +10,8 @@ import NavBar from './components/nav-bar';
 import Profile from './pages/Profile';
 import Contacts from './pages/Contacts';
 import Notifications from './pages/Notifications';
+import Login from './pages/Login';
+import Register from './pages/Registration'
 
 import axios from 'axios';
 
@@ -63,12 +65,14 @@ function App() {
       <NavBar />
       <Routes>
          <Route path='/' element={<Dashboard />} />
+         <Route path='/login' element={<Login />} />
          <Route path='/home' element={<Homepage />} />
          <Route path='/profile' element={<Profile />} />
          <Route path='/contacts' element={<Contacts />} />
          <Route path='/boardNav' element={<BoardNav />} />
          <Route path='/notifications' element={<Notifications />} />
          <Route path={`/boardNav/:boardId`} element={<Board />} />
+         <Route path='/register' element={<Register />} />
       </Routes>
       <h1>App buttons</h1>
       <button onClick={callApi}>UnprotectedRoute</button>

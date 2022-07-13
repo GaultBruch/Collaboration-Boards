@@ -22,12 +22,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'Please add a password']
   },
-  contactID: { // maybe just turn this into a contact object?
-    type: String, 
-    required: [true, 'Please add a contact ID'], //ContactID should be generated, not supplied
-    unique: true //false for now, should in general be unique
-  },
-  contactList: [contact],
+  contactList: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     // Friendlist is unimplemented for now, return to this in the future.
   boardList: [{type: mongoose.Schema.Types.ObjectId, ref:'board'}] //board ref not in this doc??
 },

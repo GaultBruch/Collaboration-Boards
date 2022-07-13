@@ -10,7 +10,7 @@ const { getBoards, createBoard, updateBoard, deleteBoard, getTasks, createTask, 
 //Get all boards // Should be updated to only get the currently logged in user's boards
 
 //I think I could go one step further, get it to only update given an id parameter
-router.get('/', jwtCheck, getBoards);
+router.get('/:boardId', jwtCheck, getBoards);
 
 //Create a new board
 router.post('/', jwtCheck, createBoard);

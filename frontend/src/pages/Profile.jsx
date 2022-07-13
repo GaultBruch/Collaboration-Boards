@@ -1,4 +1,8 @@
-import React from 'react'
+import React from 'react';
+import axios from 'axios';
+import {MainContext} from '../contexts/MainContext'
+
+
 
 function Profile() {
   return (

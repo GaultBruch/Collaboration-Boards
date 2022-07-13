@@ -10,10 +10,10 @@ const {User} = require('../models/userModel');
 
 //Grabs a single board based on the req.body.boardId passed in, and returns the board
 const getBoards = asyncHandler(async (req, res) => {
-  const board = await Board.findbyId(req.body.boardId);
+  const board = await Board.findById(req.params.boardId);
   
   //const boards = await Board.find({})
-  res.status(200).json({board})
+  res.status(200).json(board)
 })
 
 const createBoard = asyncHandler(async (req, res) => {
@@ -154,7 +154,6 @@ const deleteTask = asyncHandler(async (req, res) => {
 
 //BOARD SHARED LIST "COMMANDS"
 const getBoardShared = asyncHandler(async (req, res) => {
-  console.log(req.params.boardId);
   const board = await Board.findById(req.params.boardId);
   console.log(board);
 

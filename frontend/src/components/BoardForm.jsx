@@ -1,14 +1,16 @@
 import React from 'react'
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
+import {MainContext} from '../contexts/MainContext';
+
 
 
 function BoardForm(props) {
     
   const [boardName, setBoardName] = useState('');
   const [boardDescription, setBoardDescription] = useState('');
-  const { getAccessTokenSilently } = useAuth0();
+  const {userData} = useContext(MainContext);
 
 
   function handleDescriptionChange(e) {
@@ -29,7 +31,7 @@ function BoardForm(props) {
     (async () => {
       //Write to the board itself with the owner, sharedList gets the owner pushed to it during post
       try {
-        const token = await getAccessTokenSilently();
+        const token = userData.jwt;
         axios.post(`http://localhost:5000/api/boards`, {
           name: boardName,
           description: boardDescription,
@@ -42,16 +44,21 @@ function BoardForm(props) {
         .then(res => {
           setBoardDescription("");
           setBoardName("");
-          props.rebuild(true);
-          alert(JSON.stringify(res.data._id));
+          
           try {
-          axios.post(`http://localhost:5000/api/users/${props.userId}/boardList`, {
+            let newBoardIds = [...props.boardIds, res.data._id]
+            props.setBoardIds(newBoardIds);
+            axios.post(`http://localhost:5000/api/users/${props.userId}/boardList`, {
             boardId: res.data._id
           }, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
-          }) }
+          }).then(res => {
+            
+            props.rebuild(true)
+          });
+        }
           catch (error) {
             console.log(error);
           }
@@ -62,7 +69,6 @@ function BoardForm(props) {
       }
       
 
-      
     })();
   };
 

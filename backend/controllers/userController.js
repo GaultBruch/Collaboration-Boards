@@ -1,7 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const { User } = require('../models/userModel');
 const { Board } = require('../models/boardModel');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
+//Generate JWT
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.SEC, {
+    expiresIn: '30d',
+  })
+}
 
 
 // @desc Get User from email parameter
@@ -17,6 +25,7 @@ const getUsers = asyncHandler(async (req, res) => {
 })
 
 const createUser = asyncHandler(async (req, res) => {
+
   if(!req.body.name) {
     res.status(400)
     throw new Error('Please add a username')
@@ -32,15 +41,52 @@ const createUser = asyncHandler(async (req, res) => {
     throw new Error('Please add an email')
   }
 
+  const userExists = await User.findOne({email: req.params.email})
+
+  if(userExists) {
+    res.status(400)
+    throw new Error('User already exists')
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(req.body.password, salt)
+
   const user = await User.create({
     name: req.body.name,
-    password: req.body.password,
+    password: hashedPassword,
     email: req.body.email,
-    contactID: req.body.contactID
   })
 
-  res.status(200).json({user});
+  if(user) {
+    res.status(201).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid user data')
+  }
 })
+
+const loginUser = asyncHandler(async (req, res) => {
+  const {email, password} = req.body
+
+  const user = await User.findOne({email})
+
+  if(user && (await bcrypt.compare(password, user.password))) {
+    res.json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid Credentials')
+  }
+});
 
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
@@ -209,26 +255,14 @@ const updateBoardList = asyncHandler(async (req, res) => {
 const deleteBoardList = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.userId)
 
-  console.log('hello')
-  
   if(!user) {
     res.status(400);
     throw new Error("User not found");
   }
 
-  const board = await Board.findById(req.params.boardId);
-
-  if(!board) {
-    res.status(400);
-    throw new Error('No board with that ID found');
-  }
-
-  console.log(board)
-  console.log(board.id)
-
   try {
-    await user.boardList.pull(board.id);
-    res.status(200).json(`Board Removed, ID: ${board.id}`)
+    await user.boardList.pull(req.params.boardId);
+    res.status(200).json(`Board Removed, ID: ${req.params.boardId}`)
     user.save();
   } catch (error) {
     res.status(400);
@@ -239,5 +273,5 @@ const deleteBoardList = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-  getUsers, createUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList
+  getUsers, createUser, loginUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList
 }

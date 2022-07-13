@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React from 'react'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskForm from '../components/taskForm';
 import { useAuth0 } from '@auth0/auth0-react';
+import {MainContext} from '../contexts/MainContext'
 
 function BoardPage() {
 
@@ -15,12 +16,13 @@ function BoardPage() {
   const [inProgress, setInProgress] = useState([]);
   const [complete, setComplete] = useState([]);
   const [rebuild, setRebuild] = useState(true);
+  const {userData} = useContext(MainContext);
 
   useEffect(() => {
     if (rebuild === true) {
       (async () => {
         try {
-          const token = await getAccessTokenSilently();
+          const token = userData.jwt;
           axios.get(`http://localhost:5000/api/boards/${boardId}`, {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -48,7 +50,7 @@ function BoardPage() {
         if (element.status === 'Incomplete') {
           (async () => {
             try {
-              const token = await getAccessTokenSilently();
+              const token = userData.jwt;
               axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
                 status: 'InProgress'
               }, {
@@ -69,7 +71,7 @@ function BoardPage() {
         } else if (element.status === 'InProgress') {
           (async () => {
             try {
-              const token = await getAccessTokenSilently();
+              const token = await userData.jwt;
               axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
                 status: 'Complete' 
               }, {
@@ -89,7 +91,7 @@ function BoardPage() {
         } else if (element.status === 'Complete') {
           (async () => {
             try {
-              const token = await getAccessTokenSilently();
+              const token = userData.jwt;
               axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
                 status: 'Incomplete' 
               }, {
@@ -147,7 +149,7 @@ function BoardPage() {
         if (element.status === 'Incomplete') {
           (async () => {
             try {
-              const token = await getAccessTokenSilently();
+              const token = userData.jwt;
               axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`
@@ -164,7 +166,7 @@ function BoardPage() {
 
           (async () => {
             try {
-              const token = await getAccessTokenSilently();
+              const token = userData.jwt;
               axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`
@@ -181,7 +183,7 @@ function BoardPage() {
 
           (async () => {
             try {
-              const token = await getAccessTokenSilently();
+              const token = userData.jwt;
               axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`

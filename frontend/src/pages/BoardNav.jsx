@@ -1,10 +1,11 @@
-import React, {startTransition, useEffect, useState } from 'react'
+import React, {startTransition, useEffect, useState, useContext } from 'react'
 import BoardComponent from '../components/boardComponentBanner';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Routes, Route, generatePath} from 'react-router-dom';
 import Board from '../pages/BoardPage';
 import BoardForm from '../components/BoardForm';
+import {MainContext} from '../contexts/MainContext'
 
 
 
@@ -12,10 +13,10 @@ function BoardNav() {
 
   const [boardList, setBoardList] = useState([]);
   const [boardIds, setBoardIds] = useState([]);
-  const { user, getAccessTokenSilently } = useAuth0();
   const [rebuild, setRebuild] = useState(true);
   const [isVisible, setIsVisible] = useState([]);
   const [userId, setUserId] = useState(undefined);
+  const {userData} = useContext(MainContext);
 
   //for board in boardlist add boardcomponent. Boardcomponent should do relevant api call on click and open to board
   //Grab boards //####Currently Grabs all boards, in the future this should instead grab from the users board list and render
@@ -24,72 +25,52 @@ function BoardNav() {
   //This way we can store the board ids locally, and then grab the larger bits of information when we actually need them.
   useEffect(() => {
     if (userId === undefined) {
-      axios.get(`http://localhost:5000/api/users/${user.email}`).then(res => {
-      setUserId(res.data[0]._id)
+      
+      axios.get(`http://localhost:5000/api/users/${userData.email}`, {
+        headers: {
+          'Authorization': `Bearer ${userData.jwt}`
+        },
+      }).then(res => {
+      setUserId(userData._id);
       setBoardIds(res.data[0].boardList);
-      console.log(res);
-      console.log(res.data[0])
-      console.log(res.data[0]._id)}
-      )
+      
+      }
+      ).catch(err => {
+        console.log(err);
+      })
     }
-    console.log(userId);
-    console.log(rebuild);
     if (rebuild === true && userId !== undefined) {
-      console.log('rebuild true and userId found');
 
       //Given userId, get the boards from the user with a user get command,
       //then, for each of the boards ids grab the board from the backend and 
       //send it to the frontend to be put into the boardList. From there they should
       //work as the old boards did.
       (async () => {
+        setBoardList([]); //Empty out the boardList, to avoid double population on multiple rebuild calls.
+        let newBoardList = [];
         let vis = [];
         try {
-          const token = await getAccessTokenSilently();
+          const token = userData.jwt;
           boardIds.forEach(element => {
-            console.log(element)
             try {
-              axios.get(`http://localhost:5000/api/boards`, 
-                { 
-                  boardId: element 
-                }, {
+              axios.get(`http://localhost:5000/api/boards/${element}`, 
+                {
                   headers: {
                     'Authorization': `Bearer ${token}`
                   },
                 }).then(res => {
-                  console.log(res)
-                  setBoardList(...boardList, res.data)
-                  vis.push(element.id)
+                  setBoardList(boardList => [...boardList, res.data]);
+                  if (res.data !== null) {
+                    vis.push(res.data._id)
+                  }
                 }) 
               
             } catch (error) {
               console.log(error)
             }
-
-          
-                
           });
           setIsVisible(vis)
           setRebuild(false)
-          
-
-
-/*
-          axios.get(`http://localhost:5000/api/boards`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-          }).then(res => {
-            const boards = res.data;
-            var newBoards = boards;
-            setBoardList(res.data);
-            let vis = [];
-            newBoards.boards.forEach(element => {
-              console.log(element)
-              vis.push(element._id)
-            });
-            setIsVisible(vis);
-            setRebuild(false);
-          }); */
         } catch (error) {
           console.log(error);
         }
@@ -100,7 +81,7 @@ function BoardNav() {
   function trashBoard(boardId) {
     (async () => {
       try {
-        const token = await getAccessTokenSilently();
+        const token = userData.jwt;
         axios.delete(`http://localhost:5000/api/boards/${boardId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -108,21 +89,24 @@ function BoardNav() {
         }).then(() => {
           setIsVisible(isVisible.filter(element => element !== boardId));
         })
+        
+        axios.delete(`http://localhost:5000/api/users/${userData._id}/boardList/${boardId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        }).then(console.log('assumed successful delete')).catch(err => {
+          console.log(err)
+        })
+
       } catch (error) {
         console.log(error);
       }
     })();
   }
 
-  function getMe() {
-    axios.get(`http://localhost:5000/api/users/${user.email}`).then(res =>
-      console.log(res)
-    )
-  }
+  
 
-  console.log(boardList)
   if (userId !== undefined) {
-    console.log(rebuild)
     let renderedArray = [];
     boardList.forEach(element => {
       if (isVisible.includes(element._id)) {
@@ -130,14 +114,14 @@ function BoardNav() {
       }
     });
 
+
     return (
       <>
-      <p>UserEmail {user.email}</p>
+      <p>UserEmail {userData.email}</p>
       <p>UserId {userId}</p>
       <p>{String(rebuild)}</p>
       
-      <button onClick={() => {getMe()}}>GetmeFunc</button>
-      <BoardForm rebuild={setRebuild} userId={userId} />
+      <BoardForm rebuild={setRebuild} userId={userId} setIsVisible={setIsVisible} isVisible={isVisible} setBoardIds={setBoardIds} boardIds={boardIds}/>
       {renderedArray.map(board => (
         <>
           <BoardComponent key={board._id} board={board} rebuildState={rebuild}/>

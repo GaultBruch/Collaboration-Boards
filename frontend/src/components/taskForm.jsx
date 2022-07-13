@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {useAuth0} from '@auth0/auth0-react';
 import axios from 'axios';
+import {MainContext} from '../contexts/MainContext'
 
 
 
 function TaskForm(props) {
 
-  const {user , getAccessTokenSilently} = useAuth0();
-
   const [textVal, setTextVal] = useState('');
   const [nameVal, setNameVal] = useState('');
-  const [dueDate, setDueDate] = useState ();
+  const [dueDate, setDueDate] = useState();
+  const {userData} = useContext(MainContext);
 
   function handleTextChange(e) {
     setTextVal(e.target.value);
@@ -31,7 +31,7 @@ function TaskForm(props) {
 
     (async () => {
       try {
-        const token = await getAccessTokenSilently();
+        const token = userData.jwt;
         axios.post(`http://localhost:5000/api/boards/${props.id}`, {
           
           title: nameVal,
