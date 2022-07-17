@@ -80,7 +80,7 @@ function BoardForm(props) {
       </label>
 
       <label>
-        Description
+        Description:
         <textarea value={boardDescription} onChange={handleDescriptionChange} />
       </label>
 

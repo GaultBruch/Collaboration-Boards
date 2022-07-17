@@ -9,7 +9,7 @@ function TaskForm(props) {
 
   const [textVal, setTextVal] = useState('');
   const [nameVal, setNameVal] = useState('');
-  const [dueDate, setDueDate] = useState();
+  const [dueDate, setDueDate] = useState(undefined);
   const {userData} = useContext(MainContext);
 
   function handleTextChange(e) {
@@ -44,10 +44,24 @@ function TaskForm(props) {
           }
         })
         .then(res => {
+          if (dueDate !== undefined) {
+            axios.post(`http://localhost:5000/api/users/${userData._id}/notifications`, {
+              notification: {
+                deadline: dueDate,
+                boardId: props.id,
+                name: nameVal+'/'+props.boardName,
+                pastDue: false
+              }
+            }, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
+          }
           console.log(res);
           setTextVal('');
           setNameVal('');
-          setDueDate();
+          setDueDate(undefined);
           props.rebuild(true);
         })
       } catch (error) {

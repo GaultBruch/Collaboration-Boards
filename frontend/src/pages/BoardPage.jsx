@@ -1,16 +1,14 @@
 import axios from 'axios';
 import React from 'react'
 import { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, renderMatches } from 'react-router-dom';
 import TaskForm from '../components/taskForm';
-import { useAuth0 } from '@auth0/auth0-react';
 import {MainContext} from '../contexts/MainContext'
 
 function BoardPage() {
 
   let {boardId} = useParams();
 
-  const {user , getAccessTokenSilently} = useAuth0();
   const [board, setBoard] = useState('');
   const [incomplete, setIncomplete] = useState([]);
   const [inProgress, setInProgress] = useState([]);
@@ -137,11 +135,6 @@ function BoardPage() {
     setInProgress(inProgressTasks);
     setComplete(completedTasks);
   }
-  
-  function addTask() {
-    //Add task to board in Todos section //This might have to be a whole form
-    return null;
-  }
 
   function removeTask(taskid) {
     board.taskList.forEach(element => {
@@ -201,11 +194,22 @@ function BoardPage() {
   }
 
   useEffect(()=> {
-  if (board.taskList !== undefined) {
-    buildBoard();
+    if (board !== null) {
+      if (board.taskList !== undefined) {
+        buildBoard();
+      }
     }
   },[board]);
 
+  let navigate = useNavigate();
+
+  if (board === null) {
+    return(<>
+      <p>It appears the board you are looking for does not exist, or has failed to load...</p>
+      <p>Press the button below to return to the last page</p>
+      <button onClick={()=> navigate(-1)}>Go Back</button>
+    </>)
+  }
 
   if (board.taskList !== undefined) {
     //const testvar = board.taskList;
@@ -213,7 +217,7 @@ function BoardPage() {
       <>
         <h1>{JSON.stringify(boardId)}</h1>
         <h1>{board.name}</h1>
-        <TaskForm id={boardId} updateFunc={setIncomplete} rebuild={setRebuild} array={incomplete}/>
+        <TaskForm id={boardId} updateFunc={setIncomplete} rebuild={setRebuild} array={incomplete} boardName={board.name}/>
         <h2>Todos</h2>
         <ul>{incomplete.map((val) => <><li key={val._id}>{JSON.stringify(val)}</li>
         <button onClick={() => moveTask(val._id)}>MoveTaskButton1</button>
