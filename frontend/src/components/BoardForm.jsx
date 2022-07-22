@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import {MainContext} from '../contexts/MainContext';
 
-
+import './css/boardForm.css'
 
 function BoardForm(props) {
     
@@ -73,17 +73,16 @@ function BoardForm(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Board Name:
-        <input type="text" value={boardName} onChange={handleNameChange} />
-      </label>
+    <form className='BoardForm' onSubmit={handleSubmit}>
+      <div>
+      <label for='boardname'>Board Name:</label>
+        <input type="text" value={boardName} id='boardname' onChange={handleNameChange} />
+      </div>
 
-      <label>
-        Description:
-        <textarea value={boardDescription} onChange={handleDescriptionChange} />
-      </label>
-
+      <div>
+      <label for='description' >Description:</label>
+        <textarea value={boardDescription} id='description' onChange={handleDescriptionChange} />
+      </div>
       <input type="submit" value="Submit" />
     </form>
   )

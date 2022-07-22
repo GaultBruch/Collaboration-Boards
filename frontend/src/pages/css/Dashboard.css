@@ -1,0 +1,23 @@
+div.dashdiv a {
+  margin: 0.3rem;
+  padding: 3rem 1rem;
+  text-decoration: none;
+  color: white;
+  background-color: #222;
+  border: white solid 1px;
+  text-align: center;
+}
+
+div.dashdiv {
+  display: grid;
+  grid-template-areas: 'boards boards'
+                       'notif profile';
+  grid-template-columns: 1fr 1fr;
+}
+
+div.dashdiv .boards {
+  grid-area: boards;
+}
+
+div.dashdiv .notif { grid-area: notif;}
+div.dashdiv .profile { grid-area: profile;}

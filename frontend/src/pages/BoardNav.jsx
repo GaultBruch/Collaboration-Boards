@@ -1,16 +1,18 @@
 import React, {startTransition, useEffect, useState, useContext } from 'react'
 import BoardComponent from '../components/boardComponentBanner';
 import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
-import { Routes, Route, generatePath} from 'react-router-dom';
-import Board from '../pages/BoardPage';
 import BoardForm from '../components/BoardForm';
-import {MainContext} from '../contexts/MainContext'
+import {MainContext} from '../contexts/MainContext';
+import './css/boardNav.css';
+
+import {FaTrashAlt} from "react-icons/fa";
+import {AiFillPlusCircle} from 'react-icons/ai';
 
 
 
 function BoardNav() {
 
+  const [formOpen, setFormOpen] = useState(false);
   const [boardList, setBoardList] = useState([]);
   const [boardIds, setBoardIds] = useState([]);
   const [rebuild, setRebuild] = useState(true);
@@ -94,7 +96,7 @@ function BoardNav() {
           headers: {
             'Authorization': `Bearer ${token}`
           },
-        }).then(console.log('assumed successful delete')).catch(err => {
+        }).catch(err => {
           console.log(err)
         })
 
@@ -116,20 +118,17 @@ function BoardNav() {
 
 
     return (
-      <>
-      <p>UserEmail {userData.email}</p>
-      <p>UserId {userId}</p>
-      <p>{String(rebuild)}</p>
-      
-      <BoardForm rebuild={setRebuild} userId={userId} setIsVisible={setIsVisible} isVisible={isVisible} setBoardIds={setBoardIds} boardIds={boardIds}/>
+      <div className='boardNav'>
+        <h1>User Boards <button className='formButtonNav' onClick={() => setFormOpen(!formOpen)}><AiFillPlusCircle/></button></h1>
+        {formOpen ? <BoardForm rebuild={setRebuild} userId={userId} setIsVisible={setIsVisible} isVisible={isVisible} setBoardIds={setBoardIds} boardIds={boardIds}/> : null}
       {renderedArray.map(board => (
-        <>
+        <div className='boardBox'>
           <BoardComponent key={board._id} board={board} rebuildState={rebuild}/>
-          <button onClick={() => {trashBoard(board._id)}}>DeleteBoard</button>
-        </>
+          <button onClick={() => {trashBoard(board._id)}}><FaTrashAlt /></button>
+        </div>
       ))}
       
-      </>
+      </div>
     );
   };
 

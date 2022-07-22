@@ -32,10 +32,10 @@ router.delete('/:id/:id2', jwtCheck, deleteTask) //delete Task
 
 //Test Routes for sharedList addition and removal\
 //Not protected yet as the sharedList is not in use.
-router.get('/:boardId/sharedList', getBoardShared); // Get the shared list for a given board (Board id is :id)
-router.post('/:boardId/sharedList/:userId', addBoardShared); // Add a new person to the shared list for a given board by passing in the contactID for the given user
-router.put('/:boardId/sharedList/:userId', requiresAuth(), updateBoardShared); //  Update 
-router.delete('/:boardId/sharedList/:userId', deleteBoardShared); // delete an item from the shared list by passing in the user ID within the req.body
+router.get('/:boardId/sharedList', jwtCheck, getBoardShared); // Get the shared list for a given board (Board id is :id)
+router.post('/:boardId/sharedList/:userId', jwtCheck, addBoardShared); // Add a new person to the shared list for a given board by passing in the contactID for the given user
+router.put('/:boardId/sharedList/:userId', jwtCheck, updateBoardShared); //  Update 
+router.delete('/:boardId/sharedList/:userId', jwtCheck, deleteBoardShared); // delete an item from the shared list by passing in the user ID within the req.body
 
 
 module.exports = router;

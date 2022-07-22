@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react'
 import {MainContext} from '../contexts/MainContext'
 import axios from 'axios';
 
+import './css/profileModal.css'; 
+
 function ProfileModal({setOpenModal, setUserName, setUserEmail}) {
 
   const {userData} = useContext(MainContext);
@@ -45,24 +47,18 @@ function ProfileModal({setOpenModal, setUserName, setUserEmail}) {
   return (
     <div className="modalBackground">
       <div className="modalContainer">
-        <button onClick={() => setOpenModal(false)}>X</button>
-        <h1>Title</h1>
+        <h3>Edit User Info</h3>
         <form onSubmit={handleSubmit}>
-          <label>
-            Name:
+          <label>Name:</label>
             <input type="text" placeholder={name} value={newName} onChange={handleNameChange} />
-          </label>
+          
 
-          <label>
-            Email:
+          <label>Email:</label>
             <input type="text" placeholder={email} value={newEmail} onChange={handleEmailChange} />
-          </label>
-          <label>
-            About: Not implemented
-          </label>
-
+          
           <input type="submit" value="Submit" />
         </form>
+        <button onClick={() => setOpenModal(false)}>Cancel</button>
       </div>
     </div>
   )

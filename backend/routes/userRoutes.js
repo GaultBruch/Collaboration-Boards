@@ -1,7 +1,7 @@
 //Bring in requirements
 const express = require('express');
 const router = express.Router();
-const { getUsers, createUser, loginUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList } = require('../controllers/userController')
+const { getUsers, createUser, loginUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList, getNotifications, addToNotifications, updateNotifications, deleteNotifications } = require('../controllers/userController')
 const { jwtCheck } = require('../middleware/checkJwtAuth');
 
 //GENERAL USER ROUTING
@@ -39,5 +39,13 @@ router.get('/:userId/boardList', jwtCheck, getBoardList);
 router.post('/:userId/boardList', jwtCheck, addToBoardList);
 router.put('/:userId/boardList', jwtCheck, updateBoardList); //this does nothing currently
 router.delete('/:userId/boardList/:boardId', jwtCheck, deleteBoardList);
+
+//Notifications route
+router.get('/:userId/notifications', jwtCheck, getNotifications);
+router.post('/:userId/notifications', jwtCheck, addToNotifications);
+router.put('/:userId/notifications/:notificationId', jwtCheck, updateNotifications);
+router.delete('/:userId/notifications/:notificationId',jwtCheck, deleteNotifications);
+
+
 
 module.exports = router;

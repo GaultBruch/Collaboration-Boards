@@ -4,6 +4,8 @@ import { useContext } from 'react';
 import axios from 'axios';
 import {MainContext} from '../contexts/MainContext'
 
+import './css/Registration.css'
+
 function Registration() {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -25,6 +27,7 @@ function Registration() {
 
   function handleSubmit(e) {
     e.preventDefault()
+    if (password === password2) {
     axios.post(`http://localhost:5000/api/users`, {name: name, email: email, password: password}).then((res) => {
       setUserData({
         name: res.data.name,
@@ -32,42 +35,42 @@ function Registration() {
         _id: res.data._id,
         jwt: res.data.token
       })
+      console.log('registration attempt');
+      console.log(res);
       navigate('/', {replace: true});
     })
+  } else {
+    alert('Passwords do not match!');
   }
+}
 
   return <>
-    <section className="heading">
       <h1>
         Registration
       </h1>
-      <p>Please create an Account</p>
-    </section>
-    <section className="form">
-      <form onSubmit={handleSubmit}>
-      <input type='text' id="name" name='name'
+      <h2>Please create an Account</h2>
+      <section className='formWrap'>
+      <div className="logo">Logo</div>
+      <form className="registerForm" onSubmit={handleSubmit}>
+
+      
+      <input type='text' required id="name" name='name'
       value={name} placeholder='Enter your name'
       onChange={onChange}></input>
     
 
-    <div>
-      <input type='text' id="email" name='email'
+      <input type='text' required id="email" name='email'
       value={email} placeholder='Enter your email'
       onChange={onChange}></input>
-    </div>
-    <div>
-      <input type='text' id="password" name='password'
+      <input type='text' required id="password" name='password'
       value={password} placeholder='Enter your password'
       onChange={onChange}></input>
-    </div>
-    <div>
-      <input type='text' id="password2" name='password2'
+      <input type='text' required id="password2" name='password2'
       value={password2} placeholder='Confirm your password'
       onChange={onChange}></input>
-        <button type="submit">Submit</button>
-      </div>
+        <input type="submit" value='Register'></input>
       </form>
-    </section>
+      </section>
   </>
 
 }

@@ -1,0 +1,82 @@
+.modalBackground {
+  width:100vw;
+  height:100vh;
+  background-color: rgba(0, 0, 0, 0.658);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0px;
+}
+
+.modalContainer {
+  width: 65%;
+  height: 50%;
+  border-radius: 1rem;
+  background-color: #222;
+  border: white solid 1px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding:2rem;
+}
+
+.modalContainer h3 {
+  text-align: center;
+}
+
+.modalContainer input[type=text] {
+  justify-content: center;
+  width: 90%;
+  box-sizing: border-box;
+  border: black solid 1px;
+  display: inline-block;
+  margin: 1rem 1rem;
+}
+
+.modalContainer textarea {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+}
+
+.modalContainer label {
+  margin: 0rem 1rem;
+  font-size: 1.3rem;
+}
+
+.modalContainer input[type=submit] {
+  font-size: 1.5rem;
+  border-radius: 1rem;
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+  background-color: rgb(8, 207, 18);
+  cursor: pointer;
+}
+
+.modalContainer input[type=date] {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+}
+
+.modalContainer button {
+  display: block;
+  margin: 3rem auto;
+  background: red;
+  border: none;
+  justify-content: center;
+  width: 50%;
+  color: black; 
+  font-size: 2rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}

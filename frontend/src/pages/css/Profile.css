@@ -1,0 +1,15 @@
+.profileSection {
+  background-color: #222;
+  color: white;
+  margin: 1rem;
+  border: white solid 1px;
+  font-size: 1.3rem;
+}
+
+.profileSection button {
+  text-align: center;
+  font-size: 2rem;
+  background: transparent;
+  color: gold;
+  border: none;
+}

@@ -2,8 +2,10 @@ import React, {useEffect, useState, useContext} from 'react'
 import NavBar from '../components/nav-bar';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import {MainContext} from '../contexts/MainContext'
+import {MainContext} from '../contexts/MainContext';
+import {Link } from 'react-router-dom';
 
+import './css/Dashboard.css';
 
 function Dashboard() {
 
@@ -28,12 +30,15 @@ function Dashboard() {
   }, []); */
 
   return (
-
-  
     <>
-      <p>Dashboard</p>
-      <p>{JSON.stringify(userData._id)}</p>
-      {<p>Board Here {JSON.stringify( boardList.boards, null, "\t")}</p>}
+  
+    <h1>Dashboard</h1>
+    <div className='dashdiv'>
+      <Link className='boards'to='/boardNav'>Boards</Link>
+      <Link className='notif' to='/notifications'>Notifications</Link>
+      <Link className='profile' to='/profile'>Profile</Link>
+      
+    </div>
     </>
   )
 }

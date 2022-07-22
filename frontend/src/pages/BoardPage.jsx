@@ -4,11 +4,17 @@ import { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate, renderMatches } from 'react-router-dom';
 import TaskForm from '../components/taskForm';
 import {MainContext} from '../contexts/MainContext'
+import TaskComponentBanner from '../components/taskComponentBanner';
+import {FaAngleDoubleDown, FaTrashAlt, FaAngleDoubleUp} from 'react-icons/fa'
+import {AiFillPlusCircle} from 'react-icons/ai';
+
+import './css/boardPage.css'
 
 function BoardPage() {
 
   let {boardId} = useParams();
 
+  const [formOpen, setFormOpen] = useState(false);
   const [board, setBoard] = useState('');
   const [incomplete, setIncomplete] = useState([]);
   const [inProgress, setInProgress] = useState([]);
@@ -101,6 +107,56 @@ function BoardPage() {
                 setIncomplete([...incomplete, element]);
                 setComplete(complete.filter(element => element._id !== taskid));
                 element.status = 'Incomplete';
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
+        }
+      }
+    });
+  }
+
+  function moveTaskUp(taskid) {
+    //This function should append to a button which moves the last from 
+    //incomplete -> inprogress -> complete -> incomplete based on the current JSON state.
+    board.taskList.forEach(element => {
+      if (element._id === taskid) {
+        if (element.status === 'InProgress') {
+          (async () => {
+            try {
+              const token = await userData.jwt;
+              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                status: 'Incomplete' 
+              }, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setIncomplete([...incomplete, element]);
+                setInProgress(inProgress.filter(element => element._id !== taskid));
+                element.status = 'Incomplete';
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          })();
+        } else if (element.status === 'Complete') {
+          (async () => {
+            try {
+              const token = userData.jwt;
+              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+                status: 'InProgress' 
+              }, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+              }, {crossDomain: true})
+              .then(res => {
+                setInProgress([...inProgress, element]);
+                setComplete(complete.filter(element => element._id !== taskid));
+                element.status = 'InProgress';
               })
             } catch (error) {
               console.log(error);
@@ -214,30 +270,36 @@ function BoardPage() {
   if (board.taskList !== undefined) {
     //const testvar = board.taskList;
     return (
-      <>
-        <h1>{JSON.stringify(boardId)}</h1>
-        <h1>{board.name}</h1>
-        <TaskForm id={boardId} updateFunc={setIncomplete} rebuild={setRebuild} array={incomplete} boardName={board.name}/>
-        <h2>Todos</h2>
-        <ul>{incomplete.map((val) => <><li key={val._id}>{JSON.stringify(val)}</li>
-        <button onClick={() => moveTask(val._id)}>MoveTaskButton1</button>
-        <button onClick={() => removeTask(val._id)}>RemoveTask</button></>
+      <section className='boardpage'>
+        <h1>{board.name}<button className='formButton' onClick={() => setFormOpen(!formOpen)}><AiFillPlusCircle/></button></h1>
+
+        {formOpen ? <TaskForm id={boardId} updateFunc={setIncomplete} rebuild={setRebuild} array={incomplete} boardName={board.name}/> : null}
+        <h2>To-do</h2>
+        <ul>{incomplete.map((val) => <div className='taskContainer inc'>
+        <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
+        <button className='moveTask' onClick={() => moveTask(val._id)}><FaAngleDoubleDown /></button>
+        <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
         )}</ul>
   
         <h2>In Progress</h2>
-        <ul>{inProgress.map((val) => <><li key={val._id}>{JSON.stringify(val)}</li>
-        <button onClick={() => moveTask(val._id)}>MoveTaskButton2</button>
-        <button onClick={() => removeTask(val._id)}>RemoveTask</button></>
+        <ul>{inProgress.map((val) => <div className='taskContainer inprog'>
+          <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
+
+        <button className='moveTask' onClick={() => moveTask(val._id)}><FaAngleDoubleDown /></button>
+        <button className='moveTaskUp' onClick={() => moveTaskUp(val._id)}><FaAngleDoubleUp/></button>
+        <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
 
         )}</ul>
   
         <h2>Complete</h2>
-        <ul>{complete.map((val) => <><li key={val._id}>{JSON.stringify(val)}</li>
-        <button onClick={() => moveTask(val._id)}>MoveTaskButton3</button>
-        <button onClick={() => removeTask(val._id)}>RemoveTask</button></>
+        <ul>{complete.map((val) => <div className='taskContainer comp'>
+          <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
+
+        <button className='moveTaskUp' onClick={() => moveTaskUp(val._id)}><FaAngleDoubleUp/></button>
+        <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
         )}</ul>
   
-      </>
+      </section>
     )
   };
 }

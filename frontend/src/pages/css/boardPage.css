@@ -1,0 +1,81 @@
+h1 {
+  color: white;
+}
+
+h2 {
+  background-color: #222;
+  color: white;
+  text-align: left;
+  padding: 0rem 1rem;
+  margin: 0;
+}
+
+section.boardpage ul {
+  padding: 0rem 1rem;
+}
+
+button.removeTask {
+  float: right;
+  background-color: transparent;
+  color: rgb(179, 4, 4);
+  border: none;
+  font-size: 2rem;
+}
+
+button.moveTask {
+  background-color: transparent;
+  color: green;
+  border:none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+button.moveTaskUp {
+  background-color: transparent;
+  color: rgb(0, 60, 255);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+section.boardpage {
+  padding-bottom: 6rem;
+}
+
+.taskContainer {
+  /*
+  background-color: white;
+  border: solid black 3px;*/
+  margin: 1rem 0rem;
+  color: white;
+  border: solid white 1px;
+  background-color: #222;
+}
+
+button.formButton {
+  position: relative;
+  top: 0.3rem;
+  margin:0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.8rem;
+  height: 1.8rem;
+  width: 1.8rem;
+  border: none;
+  color: greenyellow;
+}
+
+
+/*
+div.taskContainer.inc {
+  background-color: rgba(1, 226, 196, 0.699)
+}
+
+div.taskContainer.inprog {
+  background-color: rgba(226, 136, 1, 0.664)
+}
+
+div.taskContainer.comp {
+  background-color: rgba(1, 226, 12, 0.699)
+} */

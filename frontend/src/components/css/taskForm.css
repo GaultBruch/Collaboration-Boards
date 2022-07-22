@@ -1,0 +1,46 @@
+.TaskForm {
+  background: #222;
+  color: white;
+}
+
+.TaskForm input[type=text] {
+  justify-content: center;
+  width: 90%;
+  box-sizing: border-box;
+  border: black solid 1px;
+  border-bottom: rgb(243, 0, 0) solid 2px;
+  display: inline-block;
+  margin: 0rem 1rem;
+}
+
+.TaskForm textarea {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+}
+
+.TaskForm label {
+  margin: 0rem 1rem;
+  font-size: 1.3rem;
+}
+
+.TaskForm input[type=submit] {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+  background-color: rgb(8, 207, 18);
+  cursor: pointer;
+}
+
+.TaskForm input[type=date] {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+}
+

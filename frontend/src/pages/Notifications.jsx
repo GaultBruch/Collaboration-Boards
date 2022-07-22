@@ -2,6 +2,10 @@ import axios from 'axios';
 import React, {useEffect, useState, useContext} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import {Link} from 'react-router-dom';
+import {FaTrashAlt} from 'react-icons/fa';
+import {FaAngleDoubleRight} from 'react-icons/fa';
+
+import './css/notifications.css'
 
 
 function Notifications() {
@@ -11,23 +15,24 @@ function Notifications() {
   const [sortedByWeeks, setSortedByWeeks] = useState();
 
   useEffect(() => {
-    
-    try {
-      const token = userData.jwt;
-      axios.get(`http://localhost:5000/api/users/${userData._id}/notifications`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      }, {crossDomain: true}).then(res => {
-        let sortedArray = res.data.sort((a,b) => a.deadline-b.deadline);
-        setSortedByWeeks(sortIntoWeeks(sortedArray));
+    if (awaitingSort) {
+      try {
+        const token = userData.jwt;
+        axios.get(`http://localhost:5000/api/users/${userData._id}/notifications`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        }, {crossDomain: true}).then(res => {
+          let sortedArray = res.data.sort((a,b) => a.deadline-b.deadline);
+          setSortedByWeeks(sortIntoWeeks(sortedArray));
+        }
+        )
+      } catch(error) {
+        console.log(error);
       }
-      )
-    } catch(error) {
-      console.log(error);
+      setAwaitingSort(false)
     }
-    setAwaitingSort(false)
-  }, []);
+  }, [awaitingSort]);
 
   function sortIntoWeeks(sortedArray) {
     let day = 24*60*60*1000
@@ -71,9 +76,8 @@ function Notifications() {
           'Authorization': `Bearer ${token}`
         },
       }, {crossDomain: true}).then(()=> {
-        console.log(userData._id)
-        console.log(notificationId)
         setSortedByWeeks(sortedByWeeks.filter(element => element._id !== notificationId))
+        setAwaitingSort(true);
       })
     } catch (error) {
       console.log(error);
@@ -81,57 +85,63 @@ function Notifications() {
   }
 
   if (awaitingSort || sortedByWeeks === undefined) {
-    return <p>Loading Notifications...</p>
-  } else {console.log(sortedByWeeks)}
+    return (<div className="NotificationBoard">
+      <h1>Notifications</h1>
+      <p>Loading Notifications...</p></div>)
+  }
 
   
   return (
     <>
+      <h1>Notifications</h1>
+      <p>{JSON.stringify(sortedByWeeks)}</p>
+    <div className='NotificationBoard'>
       <h2>Late Notifications:</h2>
       <>{sortedByWeeks[0].map((val) => 
-        <>
+        <div className='NotificationBanner Late'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
-          <Link to={`/boardNav/${val.boardId}`}>ToBoardLink</Link>
-          <button onClick={() => deleteNotification(val._id)}>deleteNotification</button>
-        </>
+          <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
+          <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
+        </div>
       )}</>
       <h2>Due in the next 7 days: </h2>
       <>{sortedByWeeks[1].map((val) => 
-        <>
+        <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
-          <Link to={`/boardNav/${val.boardId}`}>ToBoardLink</Link>
-          <button onClick={() => deleteNotification(val._id)}>deleteNotification</button>
-        </>
+          <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
+          <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
+        </div>
       )}</>
       <h2>Due in the next 14 days:</h2>
       <>{sortedByWeeks[2].map((val) => 
-        <>
+        <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
-          <Link to={`/boardNav/${val.boardId}`}>ToBoardLink</Link>
-          <button onClick={() => deleteNotification(val._id)}>deleteNotification</button>
-        </>
+          <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
+          <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
+        </div>
       )}</>
       <h2>Due in the next 30 days:</h2>
       <>{sortedByWeeks[3].map((val) => 
-        <>
+        <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
-          <Link to={`/boardNav/${val.boardId}`}>ToBoardLink</Link>
-          <button onClick={() => deleteNotification(val._id)}>deleteNotification</button>
-        </>
+          <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
+          <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
+        </div>
       )}</>
       <h2>Due in more than 30 days:</h2>
       <>{sortedByWeeks[4].map((val) => 
-        <>
+        <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
-          <Link to={`/boardNav/${val.boardId}`}>ToBoardLink</Link>
-          <button onClick={() => deleteNotification(val._id)}>deleteNotification</button>
-        </>
+          <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
+          <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
+        </div>
       )}</>
+    </div>
     </>
   )
 }

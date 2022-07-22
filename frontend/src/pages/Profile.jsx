@@ -2,6 +2,10 @@ import React, {useContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import {MainContext} from '../contexts/MainContext'
 
+import {BsGearFill} from 'react-icons/bs';
+
+import './css/Profile.css';
+
 import Modal from '../components/ProfileModal';
 
 
@@ -16,13 +20,15 @@ function Profile() {
 
   return (
   <>
-    <p>{JSON.stringify(userData)}</p>
-    <p>{userName}</p>
-    <p>{userEmail}</p>
-    <p>{JSON.stringify(id)}</p>
+    <h1>Profile: </h1>
+    <section className='profileSection'>
+    <p>Username: {userName}</p>
+    <p>Email: {userEmail}</p>
+    <p>UserId: {JSON.stringify(id)}</p>
     <button onClick={() => {
       setOpenModal(true);
-    }}>Edit User Data</button>
+    }}><BsGearFill/></button>
+    </section>
     {openModal && <Modal setOpenModal={setOpenModal} setUserName={setUserName} setUserEmail={setUserEmail}/>}
   </>
   )

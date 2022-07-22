@@ -7,6 +7,10 @@ import { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {MainContext} from '../contexts/MainContext';
 
+import {FaAngleDoubleRight} from 'react-icons/fa';
+
+import './css/boardComponentBanner.css'
+
 function BoardComponentBanner(props) {
 
 
@@ -80,21 +84,15 @@ function BoardComponentBanner(props) {
           e.preventDefault();
         }
       }}/> )}
-      <button>Edit Board Name/Description</button>
-      <p>BoardId {props.board._id}</p>
-      <p>Owner: Taken from props.board.owner { props.board.owner }</p>
       {toggleDescription ? (<p onDoubleClick={toggleDescriptionChange}>{boardDescription}</p>) : 
-      (<input type='text' value={boardDescription} onChange={handleDescriptionChange} onKeyDown={(e) => {
+      (<textarea type='text' value={boardDescription} onChange={handleDescriptionChange} onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === 'Escape') {
           e.preventDefault();
           e.stopPropagation();
           onEnterKey();
         }
       }}/> )}
-      <p>Icon/Widget *Not implemented</p>
-      {//<button onClick={() => trashBoard(props.board._id)}>Trash Button</button>
-      }
-      <Link to={`/boardNav/${props.board._id}`}>ToBoardLink</Link>
+      <Link to={`/boardNav/${props.board._id}`}><FaAngleDoubleRight /></Link>
     </div>
   )
   

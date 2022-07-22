@@ -1,0 +1,31 @@
+.boardBox {
+  border: black solid 2px;
+  margin: 1rem;
+}
+
+.boardBox button {
+  position: relative;
+  top: -1.8rem;
+  outline:0;
+  border:0;
+  padding:0;
+  float: right;
+  background-color: transparent;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: firebrick;
+}
+
+button.formButtonNav {
+  position: relative;
+  top: 0.2rem;
+  margin:0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.8rem;
+  height: 1.8rem;
+  width: 1.8rem;
+  border: none;
+  color: greenyellow;
+}

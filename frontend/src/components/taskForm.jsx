@@ -3,7 +3,7 @@ import {useAuth0} from '@auth0/auth0-react';
 import axios from 'axios';
 import {MainContext} from '../contexts/MainContext'
 
-
+import './css/taskForm.css'
 
 function TaskForm(props) {
 
@@ -27,8 +27,6 @@ function TaskForm(props) {
   function handleSubmit(e) {
     alert('A new task has been submitted');
     e.preventDefault();
-    console.log(props.id);
-
     (async () => {
       try {
         const token = userData.jwt;
@@ -71,23 +69,22 @@ function TaskForm(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='TaskForm' onSubmit={handleSubmit}>
+      <div>
       <label>
-        Task Name:
-        <input type="text" value={nameVal} onChange={handleNameChange} />
-      </label>
-
-      <label>
-        Description
-        <textarea type="text" value={textVal} onChange={handleTextChange} />
-      </label>
-
-      <label>
-        Deadline( *Optional)
-        <input type='date' value={dueDate} onChange={handleDateChange} />
-      </label>
+        Task Name:</label>
+        <input type="text" required value={nameVal} onChange={handleNameChange} />
+        </div>
+        <div>
+      <label for='description'>
+        Description:</label>
+        <textarea type="text" id='description' value={textVal} onChange={handleTextChange} />
+        </div>
+        <div>
+      <label for='deadline'>Deadline:</label>
+        <input type='date' id='deadline' value={dueDate} onChange={handleDateChange} />
       <input type="submit" value="Submit" />
-
+      </div>
 
     </form>
   )

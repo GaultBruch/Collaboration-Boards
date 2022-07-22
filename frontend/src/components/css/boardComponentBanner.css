@@ -1,0 +1,35 @@
+.board-banner {
+  margin: 0;
+  padding: 0;
+  background-color: #222;
+  color: white;
+}
+
+.board-banner h3 {
+  margin: 0;
+  padding: 0;
+  border-bottom: black solid 1px;
+  background-color: #00227b;
+  color: white;
+  text-align: center;
+}
+
+.board-banner p {
+  margin: 0
+}
+
+.board-banner a {
+  font-size: 2rem;
+  text-decoration: none;
+  color: rgb(0, 177, 0);
+}
+
+.board-banner a:hover {
+  color: green;
+}
+
+.board-banner textarea {
+  width:97%;
+
+}
+

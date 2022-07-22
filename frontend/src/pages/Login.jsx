@@ -3,6 +3,8 @@ import { useState, useContext } from 'react';
 import {MainContext} from '../contexts/MainContext'
 import {Link, useNavigate } from 'react-router-dom';
 
+import './css/Login.css'
+
 
 function Login() {
   let navigate = useNavigate();
@@ -30,7 +32,6 @@ function Login() {
         _id: res.data._id,
         jwt: res.data.token
       })
-      console.log(res)
       navigate('/', {replace: true});
     }).catch(err => {
       console.log(err)
@@ -42,22 +43,20 @@ function Login() {
       <h1>
         Login
       </h1>
-      <p>Don't have an account? <Link to='/register'>Click here to register</Link></p>
     </section>
-    <section className="form">
-      <form onSubmit={handleSubmit}>
-    <div>
+    <section className='formWrap'>
+
+      <div className="logo">Logo</div>
+      <form className='loginForm' onSubmit={handleSubmit}>
       <input type='text' id="email" name='email'
       value={email} placeholder='Enter your email'
       onChange={onChange}></input>
-    </div>
-    <div>
       <input type='text' id="password" name='password'
       value={password} placeholder='Enter your password'
       onChange={onChange}></input>
-    </div>
-      <button type='submit'>Submit</button>
-      </form>
+      <input type='submit' value='Login'></input>
+    </form>
+    <p>Don't have an account? <Link to='/register'>Click here to register</Link></p>
     </section>
   </>
 

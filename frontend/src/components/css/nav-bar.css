@@ -1,0 +1,76 @@
+nav {
+  position: relative;
+  background: #3949ab;
+  display: block;
+  padding: 0.4rem 0;
+  height: 2rem;
+}
+
+nav ul a {
+  position: relative;
+  color: white;
+  text-decoration: none;
+  padding: 0.2rem;
+  font-size: 3rem;
+  display: block;
+  z-index: 3;
+}
+
+nav .burger {
+  position: absolute;
+  right: 0.2rem;
+  top: 0.3rem;
+  border: 0;
+  color: white;
+  float: right;
+  font-size: 2rem;
+  background-color: transparent;
+  cursor: pointer;
+  height: 2rem;
+  z-index: 5;
+}
+
+nav ul {
+  display: none;
+  list-style: none;
+  padding:0;
+  margin-top: 2.4rem;
+  text-align: center;
+}
+
+nav ul.show {
+  display: block;
+  width: 100%;
+}
+
+nav ul.show div.navBackground {
+  position: absolute;
+  top: 0;
+  height:100vh;
+  width:100vw;
+  background: rgba(0, 0, 0, 0.74);
+  z-index: 2;
+}
+
+
+/*Animations */
+ul.show {
+  animation: fadeIn 0.1s;
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity:1;}
+}
+
+@media screen and (min-width: 900px) {
+  nav ul {
+    display: inline-block;
+  }
+
+  nav .burger {
+    display: none;
+  }
+}
+
+/* */

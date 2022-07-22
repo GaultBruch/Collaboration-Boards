@@ -171,18 +171,14 @@ const updateContact = asyncHandler(async (req, res) => {
     throw new Error('user not found')
   }
 
-  //Access the users contactlist for updating
-  var updatedContact = user.contactList.id(req.params.id2);
-
-  updatedContact.set({
-    contactID: req.body.contactID ? req.body.contactID : updatedContact.contactID,
+  user.set({
+    name: req.body.name ? req.body.name : user.name,
+    email: req.body.email ? req.body.email : user.email,
   });
 
   await user.save()
 
-  //await updatedTask.update(upd);
-
-  res.status(200).json(updatedContact)
+  res.status(200).json(user);
 });
 
 const deleteContact = asyncHandler(async (req, res) => {
@@ -218,8 +214,6 @@ const addToBoardList = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("User not found");
   }
-
-  console.log(req.body.boardId)
 
   const board = await Board.findById(req.body.boardId);
 
@@ -272,6 +266,98 @@ const deleteBoardList = asyncHandler(async (req, res) => {
 });
 
 
+//Notification "COMMANDS"
+const getNotifications = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.userId);
+
+  if(!user) {
+    res.status(400);
+    throw new Error("user not found");
+  }
+
+  res.status(200).json(user.notifications);
+});
+
+const addToNotifications = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.userId)
+
+  if(!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  try {
+    await user.notifications.push(req.body.notification);
+    res.status(200).json(`Notification Added`)
+    user.save();
+  } catch (error) {
+    res.status(400);
+    console.log(error)
+    throw new Error("Failed to add notification to list")
+  }
+
+});
+
+const updateNotifications = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  
+  if(!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+   var updatedNotif = user.notifications.id(req.params.notificationId);
+
+   updatedNotif.set({
+     name: req.body.name ? req.body.name : updatedNotif.name,
+     boardId: req.body.boardId ? req.body.boardId : updatedNotif.boardId,
+     deadline: req.body.deadline ? req.body.deadline : updatedNotif.deadline,
+     pastDue: req.body.pastDue ? req.body.pastDue : updatedNotif.pastDue,
+   });
+ 
+   await user.save()
+ 
+   //await updatedTask.update(upd);
+ 
+   res.status(200).json(updatedNotif)
+  
+});
+
+const deleteNotifications = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.userId)
+
+  if(!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+  /*
+  let newNotif = user.notifications.findById(req.params.notificationId)
+
+  console.log(req.params.notificationId)
+  const newNotificationArr = user.notifications.filter(element => element._id !== req.params.notificationId);
+  let filteredArr = [];
+  for (i = 0; i< user.notifications.length; i++) {
+    console.log(user.notifications[0])
+  }
+
+  let modification = {};
+  modification.notifications = user.notifications.filter(element => element._id !== req.params.notificationId);
+  */
+
+  try {
+    await User.findByIdAndUpdate({_id: req.params.userId},{
+      $pull: {
+        notifications: {_id: req.params.notificationId},} 
+    });
+    res.status(200).json(user.notifications)
+  } catch (error) {
+    res.status(400);
+    console.log(error)
+    throw new Error("Failed to remove notification from list")
+  }
+});
+
+
 module.exports = {
-  getUsers, createUser, loginUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList
+  getUsers, createUser, loginUser, updateUser, deleteUser, getContacts, createContact, updateContact, deleteContact, getBoardList, addToBoardList, updateBoardList, deleteBoardList, getNotifications, addToNotifications, updateNotifications, deleteNotifications
 }
