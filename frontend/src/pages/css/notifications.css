@@ -8,6 +8,7 @@ button.deleteNotif {
   background-color: transparent;
   font-size: 1.5rem;
   left:-1.5rem;
+  cursor: pointer;
 }
 
 .NotificationBanner a {
@@ -47,4 +48,13 @@ p {
   padding: 1rem;
 }
 
+@media screen and (min-width:900px) {
+  .NotificationBoard section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 420px);
+  }
 
+  .NotificationBoard section div {
+    display: block;
+  }
+}

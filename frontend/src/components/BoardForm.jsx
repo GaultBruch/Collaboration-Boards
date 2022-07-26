@@ -1,7 +1,6 @@
 import React from 'react'
 import {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
 import {MainContext} from '../contexts/MainContext';
 
 import './css/boardForm.css'

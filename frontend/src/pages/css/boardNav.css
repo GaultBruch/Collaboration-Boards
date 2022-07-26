@@ -1,11 +1,14 @@
 .boardBox {
-  border: black solid 2px;
   margin: 1rem;
+}
+
+.board-banner {
+  border: black solid 2px;
 }
 
 .boardBox button {
   position: relative;
-  top: -1.8rem;
+  top: -1.8rem; 
   outline:0;
   border:0;
   padding:0;
@@ -28,4 +31,43 @@ button.formButtonNav {
   width: 1.8rem;
   border: none;
   color: greenyellow;
+}
+
+@media screen and (min-width: 900px) {
+  .boardNav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  section.userBoards {
+    margin: 0rem 1rem;
+    border: black solid 1px;
+    background: rgba(0, 0, 0, 0.219);
+  }
+
+  section.sharedBoards {
+    margin: 0rem 1rem;
+    background: repeating-linear-gradient(
+    45deg,
+    #663434,
+    #552b2b 10px,
+    #000000 10px,
+    #000000 20px
+);
+    height: 80vh;
+    overflow-y: auto;
+  }
+
+  section.renderedUserBoards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 10px;
+  }
+
+  div.board-banner {
+    width: 25rem;
+    height: 10rem;
+  }
+
 }

@@ -1,0 +1,59 @@
+.commentForm {
+  justify-content: center;
+  background: #222;
+  color: white;
+  margin: 0 1rem;
+  margin-bottom: 14rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.commentForm input[type=text] {
+  justify-content: center;
+  width: 90%;
+  box-sizing: border-box;
+  border: black solid 1px;
+  display: inline-block;
+  margin: 0rem 1rem;
+}
+
+.commentForm input[type=email] {
+  justify-content: center;
+  width: 90%;
+  box-sizing: border-box;
+  border: black solid 1px;
+  display: inline-block;
+  margin: 0rem 1rem;
+}
+
+.commentForm textarea {
+  width: 90%;
+  height: 10rem;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+}
+
+.commentForm label {
+  margin: 0rem 1rem;
+  font-size: 1.3rem;
+}
+
+.commentForm input[type=submit] {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+  background-color: rgb(8, 207, 18);
+  cursor: pointer;
+}
+
+.commentForm input[type=date] {
+  width: 90%;
+  box-sizing: border-box;
+  display: inline-block;
+  border: black solid 1px;
+  margin: 0rem 1rem;
+}

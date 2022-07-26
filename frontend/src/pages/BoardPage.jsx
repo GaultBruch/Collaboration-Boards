@@ -270,36 +270,43 @@ function BoardPage() {
   if (board.taskList !== undefined) {
     //const testvar = board.taskList;
     return (
-      <section className='boardpage'>
+      <>
         <h1>{board.name}<button className='formButton' onClick={() => setFormOpen(!formOpen)}><AiFillPlusCircle/></button></h1>
+      <section className='boardpage'>
 
         {formOpen ? <TaskForm id={boardId} updateFunc={setIncomplete} rebuild={setRebuild} array={incomplete} boardName={board.name}/> : null}
-        <h2>To-do</h2>
-        <ul>{incomplete.map((val) => <div className='taskContainer inc'>
-        <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
-        <button className='moveTask' onClick={() => moveTask(val._id)}><FaAngleDoubleDown /></button>
-        <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
-        )}</ul>
-  
-        <h2>In Progress</h2>
-        <ul>{inProgress.map((val) => <div className='taskContainer inprog'>
+        <section className='todoSection'>
+          <h2>To-do</h2>
+          <ul className='incompleteList'>{incomplete.map((val) => <div className='taskContainer inc'>
           <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
-
-        <button className='moveTask' onClick={() => moveTask(val._id)}><FaAngleDoubleDown /></button>
-        <button className='moveTaskUp' onClick={() => moveTaskUp(val._id)}><FaAngleDoubleUp/></button>
-        <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
-
-        )}</ul>
+          <button className='moveTask' onClick={() => moveTask(val._id)}><FaAngleDoubleDown /></button>
+          <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
+          )}</ul>
+        </section>
   
-        <h2>Complete</h2>
-        <ul>{complete.map((val) => <div className='taskContainer comp'>
-          <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
+        <section className='inprogressSection'>
+          <h2>In Progress</h2>
+          <ul className='inprogressList'>{inProgress.map((val) => <div className='taskContainer inprog'>
+            <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
 
-        <button className='moveTaskUp' onClick={() => moveTaskUp(val._id)}><FaAngleDoubleUp/></button>
-        <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
-        )}</ul>
-  
+          <button className='moveTask' onClick={() => moveTask(val._id)}><FaAngleDoubleDown /></button>
+          <button className='moveTaskUp' onClick={() => moveTaskUp(val._id)}><FaAngleDoubleUp/></button>
+          <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
+
+          )}</ul>
+        </section>
+
+        <section className='completeSection'>
+          <h2>Complete</h2>
+          <ul classname='completeList'>{complete.map((val) => <div className='taskContainer comp'>
+            <TaskComponentBanner key={val._id} board={board} task={val} rebuildState={rebuild} />
+
+          <button className='moveTaskUp' onClick={() => moveTaskUp(val._id)}><FaAngleDoubleUp/></button>
+          <button className='removeTask' onClick={() => removeTask(val._id)}><FaTrashAlt /></button></div>
+          )}</ul>
+       </section>
       </section>
+      </>
     )
   };
 }

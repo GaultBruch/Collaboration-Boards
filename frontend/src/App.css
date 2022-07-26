@@ -24,7 +24,8 @@ h1 {
   padding: 1rem;
 }
 
-footer {
+footer a {
+  text-decoration: none;
   position: fixed;
   bottom: 0%;
   width: 100%;
@@ -37,3 +38,16 @@ footer {
   margin-top: auto;
 }
 
+
+@media screen and (min-width: 900px) {
+  h1 {
+    display: flex;
+  }
+
+  .testDiv {
+    width: calc(100% - 10rem);
+    position: absolute;
+    right:0;
+
+  }
+}

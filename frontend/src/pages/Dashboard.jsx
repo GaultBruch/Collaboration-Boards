@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import NavBar from '../components/nav-bar';
+import Notifications from './Notifications';
 import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
 import {MainContext} from '../contexts/MainContext';
 import {Link } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ function Dashboard() {
   const {userData, setUserData} = useContext(MainContext);
 
   const [boardList, setBoardList] = useState('');
+  const [notificationCounter, setNotificationCounter] = useState(0);
   /*
   useEffect(() => {
     (async () => {
@@ -37,7 +38,6 @@ function Dashboard() {
       <Link className='boards'to='/boardNav'>Boards</Link>
       <Link className='notif' to='/notifications'>Notifications</Link>
       <Link className='profile' to='/profile'>Profile</Link>
-      
     </div>
     </>
   )

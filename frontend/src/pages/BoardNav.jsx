@@ -119,14 +119,21 @@ function BoardNav() {
 
     return (
       <div className='boardNav'>
+        <section className='userBoards' >
         <h1>User Boards <button className='formButtonNav' onClick={() => setFormOpen(!formOpen)}><AiFillPlusCircle/></button></h1>
         {formOpen ? <BoardForm rebuild={setRebuild} userId={userId} setIsVisible={setIsVisible} isVisible={isVisible} setBoardIds={setBoardIds} boardIds={boardIds}/> : null}
+      <section className='renderedUserBoards'>
       {renderedArray.map(board => (
         <div className='boardBox'>
           <BoardComponent key={board._id} board={board} rebuildState={rebuild}/>
           <button onClick={() => {trashBoard(board._id)}}><FaTrashAlt /></button>
         </div>
       ))}
+      </section>
+      </section>
+      <section className='sharedBoards'>
+        <h1>Group Boards (In the next update!)</h1>
+      </section>
       
       </div>
     );

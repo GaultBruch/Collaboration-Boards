@@ -11,17 +11,19 @@ function TaskComponentBanner(props) {
 
   const [ taskTitle, setTaskTitle] = useState('');
   const [ taskDescription, setTaskDescription ] = useState('');
+  const [taskDate, setTaskDate] = useState('');
   const [rebuild, setRebuild] = useState(false);
   const [ toggleTitle, setToggleTitle] = useState(true);
   const [ toggleDescription, setToggleDescription] = useState(true);
+  const [toggleDate, setToggleDate] = useState(true);
   const {userData} = useContext(MainContext);
 
   useEffect(() => {
     setTaskTitle(props.task.title);
-    //if (props.board.description !== undefined) {
-      setTaskDescription(props.task.documentation);
-    //}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTaskDescription(props.task.documentation);
+    if (props.task.deadline !== '') {
+      setTaskDate(props.task.deadline);
+    }
   }, [rebuild]);
 
   function toggleTitleChange() {
@@ -40,6 +42,10 @@ function TaskComponentBanner(props) {
     setTaskDescription(e.target.value);
   }
 
+  function handleDateChange(e) {
+    setTaskDate(e.target.value);
+  }
+
   function onEnterKey() {
 
     (async () => {
@@ -47,7 +53,8 @@ function TaskComponentBanner(props) {
         const token = userData.jwt;
         axios.put(`http://localhost:5000/api/boards/${props.board._id}/${props.task._id}`, {
           title: taskTitle,
-          documentation: taskDescription
+          documentation: taskDescription,
+          deadline: taskDate
         }, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -56,6 +63,7 @@ function TaskComponentBanner(props) {
         .then(() => {
           if (toggleTitle === false) { setToggleTitle(true); };
           if (toggleDescription === false) { setToggleDescription(true); };
+          if (toggleDate === false) {setToggleDate(true); };
         })
       } catch (error) {
         console.log(error);
@@ -80,6 +88,15 @@ function TaskComponentBanner(props) {
           onEnterKey();
         }
       }}/> )}
+      {toggleDate ? (<p onDoubleClick={() => setToggleDate(false)}>{(taskDate !== undefined) ? String(new Date(taskDate)) : null}</p>) :
+        (<input type='date' value={taskDate} onChange={handleDateChange} onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === 'Escape') {
+            e.preventDefault();
+            e.stopPropagation();
+            onEnterKey();
+          }
+        }}/> 
+      )}
     </div>
   )
   

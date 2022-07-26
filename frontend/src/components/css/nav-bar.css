@@ -1,9 +1,21 @@
 nav {
   position: relative;
-  background: #3949ab;
+  background: #2d0075;
   display: block;
   padding: 0.4rem 0;
   height: 2rem;
+}
+
+nav a.homeButton {
+  color: white;
+  font-size: 2rem;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0.3rem;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
 nav ul a {
@@ -14,6 +26,7 @@ nav ul a {
   font-size: 3rem;
   display: block;
   z-index: 3;
+  background: transparent;
 }
 
 nav .burger {
@@ -41,6 +54,7 @@ nav ul {
 nav ul.show {
   display: block;
   width: 100%;
+  border:none;
 }
 
 nav ul.show div.navBackground {
@@ -64,13 +78,54 @@ ul.show {
 }
 
 @media screen and (min-width: 900px) {
+  nav {
+    position: fixed;
+    display: flex;
+    width: 10rem;
+    height: 100%;
+    flex-direction: column;
+  }
+
   nav ul {
-    display: inline-block;
+    width: 100%;
+    display: block;
+    margin: 0;
+    margin-left: auto;
+    margin-right: 1rem;
+    padding: 0;
+    background: transparent;
+    color: black;
+  }
+
+
+  nav ul a {
+    font-size: 1.2rem;
+    display: block;
+    margin: 0rem 1rem;
+    margin-top: 1.2rem;
+    padding: 0.3rem 0;
+    
+  }
+
+  nav ul a:hover {
+    background: rgb(0, 89, 255);
+    border-radius: 0.4rem;
+    transition: 0.2s;
+
   }
 
   nav .burger {
     display: none;
   }
+
+  nav .homeButton {
+    display: none;
+  }
+
+  nav ul.show div.navBackground {
+    display: none;
+  }
+
 }
 
 /* */

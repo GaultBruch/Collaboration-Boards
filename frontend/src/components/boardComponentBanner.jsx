@@ -30,10 +30,7 @@ function BoardComponentBanner(props) {
 
   useEffect(() => {
     setBoardName(props.board.name);
-    //if (props.board.description !== undefined) {
-      setBoardDescription(props.board.description);
-    //}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setBoardDescription(props.board.description);
   }, [rebuild]);
 
   function toggleNameChange() {
@@ -59,7 +56,7 @@ function BoardComponentBanner(props) {
         const token = userData.jwt;
         axios.put(`http://localhost:5000/api/boards/${props.board._id}`, {
           name: boardName,
-          description: boardDescription
+          description: boardDescription,
         }, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -92,6 +89,7 @@ function BoardComponentBanner(props) {
           onEnterKey();
         }
       }}/> )}
+
       <Link to={`/boardNav/${props.board._id}`}><FaAngleDoubleRight /></Link>
     </div>
   )

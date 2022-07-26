@@ -20,14 +20,17 @@ function Profile() {
 
   return (
   <>
-    <h1>Profile: </h1>
+    <h1>User Profile</h1>
     <section className='profileSection'>
     <p>Username: {userName}</p>
     <p>Email: {userEmail}</p>
     <p>UserId: {JSON.stringify(id)}</p>
+    <p>
+      Edit User Information
     <button onClick={() => {
       setOpenModal(true);
     }}><BsGearFill/></button>
+    </p>
     </section>
     {openModal && <Modal setOpenModal={setOpenModal} setUserName={setUserName} setUserEmail={setUserEmail}/>}
   </>

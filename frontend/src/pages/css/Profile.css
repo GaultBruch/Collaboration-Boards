@@ -8,8 +8,17 @@
 
 .profileSection button {
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   background: transparent;
-  color: gold;
+  color: rgb(34, 131, 99);
   border: none;
+  margin-left: 2rem;
+  cursor: pointer;
+}
+
+
+@media screen and (min-width:900px) {
+  section.profileSection {
+    max-width: 40rem;
+  }
 }

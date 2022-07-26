@@ -94,53 +94,52 @@ function Notifications() {
   return (
     <>
       <h1>Notifications</h1>
-      <p>{JSON.stringify(sortedByWeeks)}</p>
     <div className='NotificationBoard'>
       <h2>Late Notifications:</h2>
-      <>{sortedByWeeks[0].map((val) => 
+      <section>{sortedByWeeks[0].map((val) => 
         <div className='NotificationBanner Late'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
           <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
           <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
         </div>
-      )}</>
+      )}</section>
       <h2>Due in the next 7 days: </h2>
-      <>{sortedByWeeks[1].map((val) => 
+      <section>{sortedByWeeks[1].map((val) => 
         <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
           <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
           <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
         </div>
-      )}</>
+      )}</section>
       <h2>Due in the next 14 days:</h2>
-      <>{sortedByWeeks[2].map((val) => 
+      <section>{sortedByWeeks[2].map((val) => 
         <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
           <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
           <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
         </div>
-      )}</>
+      )}</section>
       <h2>Due in the next 30 days:</h2>
-      <>{sortedByWeeks[3].map((val) => 
+      <section>{sortedByWeeks[3].map((val) => 
         <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
           <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
           <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
         </div>
-      )}</>
+      )}</section>
       <h2>Due in more than 30 days:</h2>
-      <>{sortedByWeeks[4].map((val) => 
+      <section>{sortedByWeeks[4].map((val) => 
         <div className='NotificationBanner'>
           <p>{val.name}</p>
           <p>{(new Date(val.deadline)).toString()}</p>
           <Link to={`/boardNav/${val.boardId}`}><FaAngleDoubleRight /></Link>
           <button className='deleteNotif' onClick={() => deleteNotification(val._id)}><FaTrashAlt /></button>
         </div>
-      )}</>
+      )}</section>
     </div>
     </>
   )

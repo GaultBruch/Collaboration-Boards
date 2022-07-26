@@ -1,4 +1,8 @@
-
+.task-banner textarea {
+  height:10rem;
+  width: 90%;
+  margin: 1rem;
+}
 
 .task-banner h3 {
   margin: 1rem 1rem 0rem 1rem;
@@ -6,4 +10,5 @@
 
 .task-banner p {
   padding-top: 0;
+  white-space: pre-wrap;
 }

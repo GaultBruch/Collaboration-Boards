@@ -80,3 +80,15 @@
   cursor: pointer;
   border-radius: 0.5rem;
 }
+
+@media screen and (min-width:900px) {
+  .modalBackground {
+    right: 0;
+    
+    width: 100%;
+  }
+
+  .modalContainer {
+    max-width: 30%;
+  }
+}

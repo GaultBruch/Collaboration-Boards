@@ -4,13 +4,16 @@ import {useState} from 'react';
 
 import './css/nav-bar.css'
 import {VscMenu} from 'react-icons/vsc'
+import { AiOutlineHome } from 'react-icons/ai';
 
 
 const NavBar = () => {
 
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <nav>
+    <nav> 
+      <div className='CollaboardsLogoDiv'>Logo</div>
+      <Link to='/' className='homeButton'><AiOutlineHome/></Link>
       <ul className={showMenu ? 'show' : ''}>
         <div className='navBackground'></div>
       <Link onClick={() => setShowMenu(current => !current)} className='navItem' to={"/"}>Dashboard</Link>
