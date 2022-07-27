@@ -24,7 +24,7 @@ function ProfileModal({setOpenModal, setUserName, setUserEmail}) {
     (async () => {
       try {
         const token = userData.jwt;
-        axios.put(`http://localhost:5000/api/users/${id}`, {
+        axios.put(`/api/users/${id}`, {
           name: newName,
           email: newEmail
         }, {

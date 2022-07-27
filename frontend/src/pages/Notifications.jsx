@@ -18,7 +18,7 @@ function Notifications() {
     if (awaitingSort) {
       try {
         const token = userData.jwt;
-        axios.get(`http://localhost:5000/api/users/${userData._id}/notifications`, {
+        axios.get(`/api/users/${userData._id}/notifications`, {
           headers: {
             'Authorization': `Bearer ${token}`
           },
@@ -71,7 +71,7 @@ function Notifications() {
   function deleteNotification(notificationId) {
     try {
       const token = userData.jwt;
-      axios.delete(`http://localhost:5000/api/users/${userData._id}/notifications/${notificationId}`, {
+      axios.delete(`/api/users/${userData._id}/notifications/${notificationId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },

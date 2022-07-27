@@ -29,7 +29,7 @@ function TaskForm(props) {
     (async () => {
       try {
         const token = userData.jwt;
-        axios.post(`http://localhost:5000/api/boards/${props.id}`, {
+        axios.post(`/api/boards/${props.id}`, {
           
           title: nameVal,
           documentation: textVal,
@@ -42,7 +42,7 @@ function TaskForm(props) {
         })
         .then(res => {
           if (dueDate !== undefined) {
-            axios.post(`http://localhost:5000/api/users/${userData._id}/notifications`, {
+            axios.post(`/api/users/${userData._id}/notifications`, {
               notification: {
                 deadline: dueDate,
                 boardId: props.id,

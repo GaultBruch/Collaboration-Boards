@@ -31,7 +31,7 @@ function BoardForm(props) {
       //Write to the board itself with the owner, sharedList gets the owner pushed to it during post
       try {
         const token = userData.jwt;
-        axios.post(`http://localhost:5000/api/boards`, {
+        axios.post(`/api/boards`, {
           name: boardName,
           description: boardDescription,
           owner: props.userId
@@ -47,7 +47,7 @@ function BoardForm(props) {
           try {
             let newBoardIds = [...props.boardIds, res.data._id]
             props.setBoardIds(newBoardIds);
-            axios.post(`http://localhost:5000/api/users/${props.userId}/boardList`, {
+            axios.post(`/api/users/${props.userId}/boardList`, {
             boardId: res.data._id
           }, {
             headers: {

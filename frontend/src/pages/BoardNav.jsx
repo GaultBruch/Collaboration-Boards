@@ -28,7 +28,7 @@ function BoardNav() {
   useEffect(() => {
     if (userId === undefined) {
       
-      axios.get(`http://localhost:5000/api/users/${userData.email}`, {
+      axios.get(`/api/users/${userData.email}`, {
         headers: {
           'Authorization': `Bearer ${userData.jwt}`
         },
@@ -55,7 +55,7 @@ function BoardNav() {
           const token = userData.jwt;
           boardIds.forEach(element => {
             try {
-              axios.get(`http://localhost:5000/api/boards/${element}`, 
+              axios.get(`/api/boards/${element}`, 
                 {
                   headers: {
                     'Authorization': `Bearer ${token}`
@@ -84,7 +84,7 @@ function BoardNav() {
     (async () => {
       try {
         const token = userData.jwt;
-        axios.delete(`http://localhost:5000/api/boards/${boardId}`, {
+        axios.delete(`/api/boards/${boardId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           },
@@ -92,7 +92,7 @@ function BoardNav() {
           setIsVisible(isVisible.filter(element => element !== boardId));
         })
         
-        axios.delete(`http://localhost:5000/api/users/${userData._id}/boardList/${boardId}`, {
+        axios.delete(`/api/users/${userData._id}/boardList/${boardId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           },

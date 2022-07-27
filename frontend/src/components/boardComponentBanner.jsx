@@ -54,7 +54,7 @@ function BoardComponentBanner(props) {
     (async () => {
       try {
         const token = userData.jwt;
-        axios.put(`http://localhost:5000/api/boards/${props.board._id}`, {
+        axios.put(`/api/boards/${props.board._id}`, {
           name: boardName,
           description: boardDescription,
         }, {

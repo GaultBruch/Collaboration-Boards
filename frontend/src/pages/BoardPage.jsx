@@ -27,7 +27,7 @@ function BoardPage() {
       (async () => {
         try {
           const token = userData.jwt;
-          axios.get(`http://localhost:5000/api/boards/${boardId}`, {
+          axios.get(`/api/boards/${boardId}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             },
@@ -55,7 +55,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = userData.jwt;
-              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.put(`/api/boards/${boardId}/${taskid}`, {
                 status: 'InProgress'
               }, {
                 headers: {
@@ -76,7 +76,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = await userData.jwt;
-              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.put(`/api/boards/${boardId}/${taskid}`, {
                 status: 'Complete' 
               }, {
                 headers: {
@@ -96,7 +96,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = userData.jwt;
-              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.put(`/api/boards/${boardId}/${taskid}`, {
                 status: 'Incomplete' 
               }, {
                 headers: {
@@ -126,7 +126,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = await userData.jwt;
-              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.put(`/api/boards/${boardId}/${taskid}`, {
                 status: 'Incomplete' 
               }, {
                 headers: {
@@ -146,7 +146,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = userData.jwt;
-              axios.put(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.put(`/api/boards/${boardId}/${taskid}`, {
                 status: 'InProgress' 
               }, {
                 headers: {
@@ -199,7 +199,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = userData.jwt;
-              axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.delete(`/api/boards/${boardId}/${taskid}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 },
@@ -216,7 +216,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = userData.jwt;
-              axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.delete(`/api/boards/${boardId}/${taskid}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 },
@@ -233,7 +233,7 @@ function BoardPage() {
           (async () => {
             try {
               const token = userData.jwt;
-              axios.delete(`http://localhost:5000/api/boards/${boardId}/${taskid}`, {
+              axios.delete(`/api/boards/${boardId}/${taskid}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 },

@@ -51,7 +51,7 @@ function TaskComponentBanner(props) {
     (async () => {
       try {
         const token = userData.jwt;
-        axios.put(`http://localhost:5000/api/boards/${props.board._id}/${props.task._id}`, {
+        axios.put(`/api/boards/${props.board._id}/${props.task._id}`, {
           title: taskTitle,
           documentation: taskDescription,
           deadline: taskDate

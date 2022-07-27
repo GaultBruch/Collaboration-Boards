@@ -28,7 +28,7 @@ function Registration() {
   function handleSubmit(e) {
     e.preventDefault()
     if (password === password2) {
-    axios.post(`http://localhost:5000/api/users`, {name: name, email: email, password: password}).then((res) => {
+    axios.post(`/api/users`, {name: name, email: email, password: password}).then((res) => {
       setUserData({
         name: res.data.name,
         email: res.data.email,

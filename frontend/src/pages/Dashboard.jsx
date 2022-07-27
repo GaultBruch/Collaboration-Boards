@@ -17,7 +17,7 @@ function Dashboard() {
   useEffect(() => {
     (async () => {
       try {
-        axios.get(`http://localhost:5000/api/boards`, {
+        axios.get(`/api/boards`, {
           headers: {
             'Authorization': `Bearer ${token}`
           },
