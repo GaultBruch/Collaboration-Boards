@@ -61,6 +61,8 @@ function BoardNav() {
                     'Authorization': `Bearer ${token}`
                   },
                 }).then(res => {
+                  console.log(res);
+                  console.log(boardList);
                   setBoardList(boardList => [...boardList, res.data]);
                   if (res.data !== null) {
                     vis.push(res.data._id)

@@ -32,6 +32,8 @@ function Login() {
         _id: res.data._id,
         jwt: res.data.token
       })
+      console.log(res);
+      console.log('successful login');
       navigate('/', {replace: true});
     }).catch(err => {
       console.log(err)

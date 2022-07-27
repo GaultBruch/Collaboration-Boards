@@ -23,6 +23,7 @@ function Notifications() {
             'Authorization': `Bearer ${token}`
           },
         }, {crossDomain: true}).then(res => {
+          console.log(res);
           let sortedArray = res.data.sort((a,b) => a.deadline-b.deadline);
           setSortedByWeeks(sortIntoWeeks(sortedArray));
         }
