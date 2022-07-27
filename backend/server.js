@@ -61,29 +61,10 @@ const checkJwt = auth({
   issuerBaseURL: process.env.ISSUER
 }); */
 
-app.get('/echo', function(req, res) {
-  res.json({
-    message: JSON.stringify(req.get("Authorization"))
-  });
-})
 
-app.get('/api/public', function(req, res) {
-  res.json({
-    message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.'
-  });
-}); 
-
-// This route needs authentication
-app.get('/api/private', jwtCheck, function(req, res) {
-  console.log('Got in');
-  res.json({
-    message: 'Hello from a private endpoint! You need to be authenticated to see this.'
-  });
-}); 
 
 app.use('/api/users', require('./routes/userRoutes')); //protected
 app.use('/api/boards', require('./routes/boardRoutes')); //unprotected
-app.use('/', require('./routes/profileRoutes')); //unprotected
 
 
 app.use(errorHandler);
