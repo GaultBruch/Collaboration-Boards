@@ -25,7 +25,7 @@ function Login() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    axios.post(`http://localhost:5000/api/users/login`, {email: email, password: password,}).then((res) => {
+    axios.post(`/api/users/login`, {email: email, password: password,}).then((res) => {
       setUserData({
         name: res.data.name,
         email: res.data.email,
