@@ -1,4 +1,4 @@
-# Collaboration-Boards
+# Collaboration-Boards [DEPRECIATED]
 The collaboration boards project was a test of how I could do setting up a large project involving a react frontend and a mongodb backend. Up to this point I had not worked with the MERN stack before, so it was a huge learning experience. For the most part, this is talked about on my github site, so I won't go into too much depth here.
 If you want to see the site's progress for yourself, head over to
 https://merncollaboardsgbruch.herokuapp.com/
@@ -8,3 +8,5 @@ Personal Notes:
 
 I had to change the heroku install on the backend to remove the localhost, so when hosted from the computer this doesn't work. A simple fix is to make it so that during the proper installation the .env variables are changed. That'll be added in the next update to this, since otherwise it's very hard to add new features.
 
+DEPRECIATION NOTE:
+Heroku recently disabled free trials for their servers, totally fair, but it is not worth much for this project to stay running since it was essentially just a pet project to work with. Will be brought back up and improved if I get back into web dev at any point
